@@ -1,7 +1,7 @@
 
 const Sequelize = require('sequelize')
 const db = require('../db')
-
+//cartitem
 const CartItem = db.define('cartItem', {
   price: {
     type: Sequelize.DECIMAL(4,2),
