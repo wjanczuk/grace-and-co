@@ -16,6 +16,20 @@ const User = db.define('user', {
       return () => this.getDataValue('password')
     }
   },
+  first_name: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  last_name: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  shipping_address: {
+    type: Sequelize.STRING,
+  },
+  billing_address:{
+    type: Sequelize.STRING,
+  },
   salt: {
     type: Sequelize.STRING,
     // Making `.salt` act like a function hides it when serializing to JSON.
