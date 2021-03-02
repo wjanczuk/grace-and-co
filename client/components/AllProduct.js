@@ -22,15 +22,6 @@ export class AllProduct extends React.Component {
               <span>{product.price}</span>
               <span>{product.quantity}</span>
             </Link>
-            <button
-              type="button"
-              onClick={() => {
-                //addToCart needs to be in store and imported
-                this.props.addToCart(product.id)
-              }}
-            >
-              Add to cart
-            </button>
           </div>
         ))}
       </div>
