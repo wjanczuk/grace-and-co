@@ -1,5 +1,5 @@
 const {green, red} = require('chalk')
-const {db} = require('../server/db')
+const db = require('../server/db')
 const Product = require('../server/db/models/product')
 const User = require('../server/db/models/user')
 
@@ -185,7 +185,7 @@ const seed = async () => {
       {
         name: 'Chartreuse Hoop Lucite Earring',
         description: `Ready to elevate everything? Crafted in India by skilled artisans, our lucite collection is molded into modern geometric shapes. The lightweight lucite hoop earrings will add flare to any outfit. These of-the-moment extras are perfect for the office or everyday.`,
-        category: 'Lucite & Resin',
+        category: 'Lucite + Resin',
         imageUrl: './public/img/LR_1.jpg',
         price: 20.0,
         inventory: 50
@@ -193,7 +193,7 @@ const seed = async () => {
       {
         name: 'Chartreuse Clear Rectangle Half-Round Lucite Earring',
         description: `Our lucite rectangle with double half-round earrings feature bold shapes that dangle from a brass hoop. Crafted in India by skilled artisans and molded into modern geometric statement accessories, these statement earrings are the perfect addition to your modern boho wardrobe.`,
-        category: 'Lucite & Resin',
+        category: 'Lucite + Resin',
         imageUrl: './public/img/LR_2.jpg',
         price: 20.0,
         inventory: 50
@@ -201,7 +201,7 @@ const seed = async () => {
       {
         name: 'Watermelon Clear Double Half Round Lucite Earring',
         description: `Our lucite collection is crafted in India by skilled artisans and molded into modern geometric statement accessories. The lucite double half-round earrings add a dose of modern flair to your effortlessly cool wardrobe. The bold shapes make a statement for every day and any occasion.`,
-        category: 'Lucite & Resin',
+        category: 'Lucite + Resin',
         imageUrl: './public/img/LR_3.jpg',
         price: 20.0,
         inventory: 50
@@ -209,7 +209,7 @@ const seed = async () => {
       {
         name: 'Clear Double Half Round Lucite Earring',
         description: `Our lucite collection is crafted in India by skilled artisans and molded into modern geometric statement accessories. The lucite double half-round earrings add a dose of modern flair to your effortlessly cool wardrobe. The bold shapes make a statement for every day and any occasion.`,
-        category: 'Lucite & Resin',
+        category: 'Lucite + Resin',
         imageUrl: './public/img/LR_4.jpg',
         price: 20.0,
         inventory: 50
@@ -217,7 +217,7 @@ const seed = async () => {
       {
         name: 'Turquoise Clear Rectangle Half-Round Lucite Earring',
         description: `Our lucite rectangle with double half-round earrings feature bold shapes that dangle from a brass hoop. Crafted in India by skilled artisans and molded into modern geometric statement accessories, these statement earrings are the perfect addition to your modern boho wardrobe.`,
-        category: 'Lucite & Resin',
+        category: 'Lucite + Resin',
         imageUrl: './public/img/LR_5.jpg',
         price: 20.0,
         inventory: 50
@@ -225,7 +225,7 @@ const seed = async () => {
       {
         name: 'Turquoise Clear Rectangle Half-Round Lucite Earring',
         description: `Our lucite rectangle with double half-round earrings feature bold shapes that dangle from a brass hoop. Crafted in India by skilled artisans and molded into modern geometric statement accessories, these statement earrings are the perfect addition to your modern boho wardrobe.`,
-        category: 'Lucite & Resin',
+        category: 'Lucite + Resin',
         imageUrl: './public/img/LR_5.jpg',
         price: 20.0,
         inventory: 50
