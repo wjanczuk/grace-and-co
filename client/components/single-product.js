@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-// import { Link } from 'react-router-dom'
-// import {fetchProduct} from ''
+import {getSingleProduct} from '../store/products'
 
 //api/products/:id
 //dispatches to redux for single product data
@@ -39,13 +38,13 @@ class SingleProduct extends Component {
 
 const mapStateToProps = state => {
   return {
-    product: state.product
+    product: state.selected
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadProduct: id => dispatch(fetchProduct(id))
+    loadProduct: id => dispatch(getSingleProduct(id))
   }
 }
 
