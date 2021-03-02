@@ -1,9 +1,9 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {getProducts} from '../client/store/products'
+import {getProducts} from '../store/products'
 
-export class AllProduct extends React.Component {
+class AllProduct extends React.Component {
   componentDidMount() {
     this.props.getProducts()
   }
@@ -38,9 +38,7 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     //make sure getProducts is imported with correct file path
-    getProducts: () => dispatch(getProducts()),
-    //addToCart needs to be in store- Needs to be imported
-    addToCart: () => dispatch(addToCart())
+    getProducts: () => dispatch(getProducts())
   }
 }
 

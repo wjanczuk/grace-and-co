@@ -15,7 +15,7 @@ const seed = async () => {
         description:
           'Part of our signature seed bead collection, these amazing fringe earrings offer a unique look as they hang from a brass triangle at the top. They are handcrafted by artisans in India and are sure to add an effortlessly cool edge to any modern boho look.',
         category: 'Beaded',
-        imageUrl: './public/img/Beaded_1_Pink-Citron-Peacock.jpg',
+        imageUrl: '../public/img/Beaded_1_Pink-Citron-Peacock.jpg',
         price: 30.0,
         inventory: 25
       },
