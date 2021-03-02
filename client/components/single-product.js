@@ -7,26 +7,26 @@ import {getSingleProduct} from '../store/products'
 
 class SingleProduct extends Component {
   componentDidMount() {
-    this.props.loadProduct(this.props.match.params.id)
+    this.props.loadSingleProduct(this.props.match.params.id)
   }
 
   render() {
-    const {product} = this.props
+    const {singleProduct} = this.props
     return (
       <div id="single-product-container">
-        {product ? (
+        {singleProduct === undefined ? (
           <h1>Product Loading...</h1>
         ) : (
           <div>
-            <img src={product.imageUrl} alt={product.name} />
-            <h1>{product.name}</h1>
-            <h3>{product.price}</h3>
-            {product.inventory === 0 && (
+            <img src={singleProduct.imageUrl} alt={singleProduct.name} />
+            <h1>{singleProduct.name}</h1>
+            <h3>{singleProduct.price}</h3>
+            {singleProduct.inventory === 0 && (
               <h3>This item currently out of stock</h3>
             )}
-            <p>{product.description}</p>
+            <p>{singleProduct.description}</p>
 
-            <button disabled={!product.inventory > 0} type="submit">
+            <button disabled={!singleProduct.inventory > 0} type="submit">
               Add To Cart
             </button>
           </div>
@@ -38,13 +38,13 @@ class SingleProduct extends Component {
 
 const mapStateToProps = state => {
   return {
-    product: state.selected
+    singleProduct: state.products.selected
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadProduct: id => dispatch(getSingleProduct(id))
+    loadSingleProduct: id => dispatch(getSingleProduct(id))
   }
 }
 
