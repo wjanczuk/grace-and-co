@@ -1,12 +1,16 @@
 const router = require('express').Router()
-const {Cart} = require('../db/models')
-module.exports = router
+const {CartItem, Cart} = require('../db/models')
 
-// GET /api/cart
-router.get('/', async (req, res, next) => {
+//GET /api/cart/:userId
+router.get('/:userId', async (req, res, next) => {
   try {
-    const cart = await Cart.findOne({where: {userId: req.body}})
-    res.json(cart)
+    const cart = await Cart.findOne({
+      where: {
+        userId: req.params.userId
+      }
+    })
+    const cartItems = await cart.getProducts()
+    res.json(cartItems)
   } catch (error) {
     next(error)
   }
@@ -21,3 +25,37 @@ router.post('/', async (req, res, next) => {
     next(error)
   }
 })
+
+//DELETE /api/cart
+router.delete('/', async (req, res, next) => {
+  try {
+    await CartItem.destroy({
+      where: {
+        id: req.body.itemId
+      }
+    })
+    res.sendStatus(200)
+  } catch (error) {
+    next(error)
+  }
+})
+
+//PUT /api/cart
+router.put('/', async (req, res, next) => {
+  try {
+    await CartItem.update(
+      {
+        quantity: req.body.quantity
+      },
+      {
+        where: {
+          id: req.body.itemId
+        }
+      }
+    )
+  } catch (error) {
+    next(error)
+  }
+})
+
+module.exports = router

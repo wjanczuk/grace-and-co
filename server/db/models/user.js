@@ -24,18 +24,10 @@ const User = db.define('user', {
     }
   },
   first_name: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true
-    }
+    type: Sequelize.STRING
   },
   last_name: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true
-    }
+    type: Sequelize.STRING
   },
   isAdmin: {
     type: Sequelize.BOOLEAN,
@@ -79,9 +71,7 @@ const User = db.define('user', {
 
 module.exports = User
 
-/**
- * instanceMethods
- */
+//instance methods
 User.prototype.correctPassword = function(candidatePwd) {
   return User.encryptPassword(candidatePwd, this.salt()) === this.password()
 }
