@@ -4,12 +4,12 @@ import axios from 'axios'
 const GOT_PRODUCTS = 'GOT_PRODUCTS'
 const GOT_SINGLE_PRODUCT = 'GOT_SINGLE_PRODUCT'
 
-// ACTION CREATORS
-const gotProducts = products => ({
+// ACTION CREATORS - exporting for testing purposes
+export const gotProducts = products => ({
   type: GOT_PRODUCTS,
   products
 })
-const gotSingleProduct = product => ({
+export const gotSingleProduct = product => ({
   type: GOT_SINGLE_PRODUCT,
   product
 })
