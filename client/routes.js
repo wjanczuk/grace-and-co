@@ -11,14 +11,35 @@ import {
   AllProduct
 } from './components'
 import {me} from './store'
+import {getCart, createCart} from './store/cart'
 // import AllProduct from './components/AllProduct'
 
 /**
  * COMPONENT
  */
 class Routes extends Component {
+  constructor() {
+    super()
+    this.state = {
+      user: null,
+      cart: null
+    }
+  }
   componentDidMount() {
-    this.props.loadInitialData()
+    const {loadInitialData, isLoggedIn, loadCart, createNewCart} = this.props
+    let loadedUser = loadInitialData()
+    let loadedCart
+
+    if (isLoggedIn) {
+      loadedCart = loadCart(loadedUser.id)
+    } else {
+      loadedCart = createNewCart()
+    }
+
+    this.setState({
+      user: loadedUser, //{} if user not logged in
+      cart: loadedCart
+    })
   }
 
   render() {
@@ -60,6 +81,12 @@ const mapDispatch = dispatch => {
   return {
     loadInitialData() {
       dispatch(me())
+    },
+    loadCart(userId) {
+      dispatch(getCart(userId))
+    },
+    createNewCart() {
+      dispatch(createCart())
     }
   }
 }
