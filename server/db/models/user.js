@@ -2,7 +2,7 @@ const crypto = require('crypto')
 const Sequelize = require('sequelize')
 const db = require('../db')
 
-//user
+//user model
 const User = db.define('user', {
   email: {
     type: Sequelize.STRING,
@@ -86,9 +86,7 @@ User.prototype.correctPassword = function(candidatePwd) {
   return User.encryptPassword(candidatePwd, this.salt()) === this.password()
 }
 
-/**
- * classMethods
- */
+//class methods
 User.generateSalt = function() {
   return crypto.randomBytes(16).toString('base64')
 }
@@ -101,9 +99,7 @@ User.encryptPassword = function(plainText, salt) {
     .digest('hex')
 }
 
-/**
- * hooks
- */
+//hooks
 const setSaltAndPassword = user => {
   if (user.changed('password')) {
     user.salt = User.generateSalt()

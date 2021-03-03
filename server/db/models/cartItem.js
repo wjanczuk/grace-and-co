@@ -1,8 +1,13 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 
-//cartItem
+//cartItem model
 const CartItem = db.define('cartItem', {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
   quantity: {
     type: Sequelize.INTEGER,
     allowNull: false,

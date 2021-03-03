@@ -11,16 +11,19 @@ class AllProduct extends React.Component {
     return (
       <div>
         <div>
-          <h3> Grace Shopper </h3>
+          <h3>Grace Shopper</h3>
           <h5>Quote insert</h5>
         </div>
         {this.props.products.map(product => (
           <div key={product.id}>
             <Link to={`/products/${product.id}`}>
-              <img src={product.imageUrl} alt={product.name} />
+              <img
+                src={product.imageUrl}
+                alt={product.name}
+                style={{width: '275px'}}
+              />
               <h5>{product.name}</h5>
-              <span>{product.price}</span>
-              <span>{product.quantity}</span>
+              <span>${parseFloat(product.price)}</span>
             </Link>
           </div>
         ))}

@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 
-//product
+//product model
 const Product = db.define('product', {
   name: {
     type: Sequelize.STRING,
@@ -17,7 +17,10 @@ const Product = db.define('product', {
       'Brass',
       'Lucite + Resin',
       'Wood',
-      'Leather'
+      'Leather',
+      'Huggies + Ear Cuffs',
+      'Stud',
+      'Statement'
     ),
     allowNull: false
   },
