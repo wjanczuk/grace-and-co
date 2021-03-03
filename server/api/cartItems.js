@@ -1,14 +1,11 @@
 const router = require('express').Router()
-const {CartItem} = require('../db/models')
+const {CartItem, Cart} = require('../db/models')
 
 // GET /api/cartItems/:cartId
 router.get('/:cartId', async (req, res, next) => {
   try {
-    const cartItems = await CartItem.findAll({
-      where: {
-        cartId: req.params.cartId
-      }
-    })
+    const cart = await Cart.findByPk(req.params.cartId)
+    const cartItems = await cart.getProducts()
     res.json(cartItems)
   } catch (error) {
     next(error)
