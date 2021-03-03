@@ -20,7 +20,7 @@ class SingleProduct extends Component {
           <div>
             <img src={singleProduct.imageUrl} alt={singleProduct.name} />
             <h1>{singleProduct.name}</h1>
-            <h3>{singleProduct.price}</h3>
+            <h3>${singleProduct.price}</h3>
             {singleProduct.inventory === 0 && (
               <h3>This item currently out of stock</h3>
             )}
