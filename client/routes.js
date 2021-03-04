@@ -27,19 +27,19 @@ class Routes extends Component {
   }
   componentDidMount() {
     const {loadInitialData, isLoggedIn, loadCart, createNewCart} = this.props
-    // let loadedUser = loadInitialData()
-    // let loadedCart
+    let loadedUser = loadInitialData()
+    let loadedCart
 
-    // if (isLoggedIn) {
-    //   loadedCart = loadCart(loadedUser.id)
-    // } else {
-    //   loadedCart = createNewCart()
-    // }
+    if (isLoggedIn) {
+      loadedCart = loadCart(loadedUser.id)
+    } else {
+      loadedCart = createNewCart()
+    }
 
-    // this.setState({
-    //   user: loadedUser, //{} if user not logged in
-    //   cart: loadedCart
-    // })
+    this.setState({
+      user: loadedUser, //{} if user not logged in
+      cart: loadedCart
+    })
   }
 
   render() {
