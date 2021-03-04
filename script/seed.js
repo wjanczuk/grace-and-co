@@ -1006,22 +1006,26 @@ const seed = async () => {
       {
         productId: P1.id,
         quantity: 1,
-        orderId: O1.id
+        orderId: O1.id,
+        price: P1.price
       },
       {
         productId: P65.id,
         quantity: 3,
-        orderId: O1.id
+        orderId: O1.id,
+        price: P65.price
       },
       {
         productId: P77.id,
         quantity: 2,
-        orderId: O1.id
+        orderId: O1.id,
+        price: P77.price
       },
       {
         productId: P100.id,
         quantity: 1,
-        orderId: O1.id
+        orderId: O1.id,
+        price: P100.price
       },
       {
         productId: P54.id,
@@ -1031,32 +1035,38 @@ const seed = async () => {
       {
         productId: P33.id,
         quantity: 1,
-        orderId: O3.id
+        orderId: O3.id,
+        price: P33.price
       },
       {
         productId: P34.id,
         quantity: 1,
-        orderId: O3.id
+        orderId: O3.id,
+        price: P34.price
       },
       {
         productId: P35.id,
         quantity: 1,
-        orderId: O3.id
+        orderId: O3.id,
+        price: P35.price
       },
       {
         productId: P2.id,
         quantity: 5,
-        orderId: O4.id
+        orderId: O4.id,
+        price: P2.price
       },
       {
         productId: P10.id,
         quantity: 3,
-        orderId: O4.id
+        orderId: O4.id,
+        price: P10.price
       },
       {
         productId: P98.id,
         quantity: 1,
-        orderId: O4.id
+        orderId: O4.id,
+        price: P98.price
       }
     ]
 
