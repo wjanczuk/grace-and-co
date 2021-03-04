@@ -24,6 +24,7 @@ const editedQuantity = (itemId, quantity) => ({
 export const getOrder = userId => {
   return async dispatch => {
     try {
+      console.log('USER ID ----->', userId)
       const {data: order} = await axios.get(`/api/cart/${userId}`)
       dispatch(gotOrder(order))
     } catch (error) {

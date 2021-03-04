@@ -1,20 +1,21 @@
 import axios from 'axios'
 
-// ACTION TYPES
+// action types
 const GOT_PRODUCTS = 'GOT_PRODUCTS'
 const GOT_SINGLE_PRODUCT = 'GOT_SINGLE_PRODUCT'
 
-// ACTION CREATORS - exporting for testing purposes
-export const gotProducts = products => ({
+// action creators
+const gotProducts = products => ({
   type: GOT_PRODUCTS,
   products
 })
+
 export const gotSingleProduct = product => ({
   type: GOT_SINGLE_PRODUCT,
   product
 })
 
-// THUNK CREATORS
+// thunk creators
 export const getProducts = () => {
   return async dispatch => {
     try {

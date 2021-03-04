@@ -19,28 +19,9 @@ import {getCart, createCart} from './store/cart'
  * COMPONENT
  */
 class Routes extends Component {
-  constructor() {
-    super()
-    this.state = {
-      user: null,
-      cart: null
-    }
-  }
   componentDidMount() {
     const {loadInitialData, isLoggedIn, loadCart, createNewCart} = this.props
-    let loadedUser = loadInitialData()
-    let loadedCart
-
-    if (isLoggedIn) {
-      loadedCart = loadCart(loadedUser.id)
-    } else {
-      loadedCart = createNewCart()
-    }
-
-    this.setState({
-      user: loadedUser, //{} if user not logged in
-      cart: loadedCart
-    })
+    loadInitialData()
   }
 
   render() {

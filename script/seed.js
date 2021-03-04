@@ -1,6 +1,6 @@
 const {green, red} = require('chalk')
 const db = require('../server/db')
-const {Product, User, Cart, CartItem} = require('../server/db/models')
+const {Product, User, Order, OrderItem} = require('../server/db/models')
 
 const seed = async () => {
   try {
@@ -923,48 +923,48 @@ const seed = async () => {
       {
         email: 'weronika@me.com',
         password: 'invisiblewoman1',
-        first_name: 'Weronika',
-        last_name: 'Janczuk'
+        firstName: 'Weronika',
+        lastName: 'Janczuk'
       },
       {
         email: 'victoria@me.com',
         password: 'invisiblewoman2',
-        first_name: 'Victoria',
-        last_name: 'Ho',
+        firstName: 'Victoria',
+        lastName: 'Ho',
         isAdmin: true
       },
       {
         email: 'michelle@me.com',
         password: 'invisiblewoman3',
-        first_name: 'Michelle',
-        last_name: 'Dacal',
+        firstName: 'Michelle',
+        lastName: 'Dacal',
         isAdmin: true
       },
       {
         email: 'kay@me.com',
         password: 'invisiblewoman4',
-        first_name: 'Kay',
-        last_name: 'XiongPachay'
+        firstName: 'Kay',
+        lastName: 'XiongPachay'
       },
       {
         email: 'john@me.com',
         password: 'invisiblewoman5',
-        first_name: 'John',
-        last_name: 'Doe'
+        firstName: 'John',
+        lastName: 'Doe'
       },
       {
         email: 'jane@me.com',
         password: 'invisiblewoman6',
-        first_name: 'Jane',
-        last_name: 'Doe'
+        firstName: 'Jane',
+        lastName: 'Doe'
       }
     ]
 
     const [U1, U2, U3, U4, U5, U6] = await User.bulkCreate(users)
     console.log(green('Seeded users!'))
 
-    //cart seeding
-    const carts = [
+    //order seeding
+    const orders = [
       {
         completed: true,
         paymentMethod: 'credit',
@@ -998,65 +998,76 @@ const seed = async () => {
       }
     ]
 
-    const [C1, C2, C3, C4] = await Cart.bulkCreate(carts)
-    console.log(green('Seeded carts!'))
+    const [O1, O2, O3, O4] = await Order.bulkCreate(orders)
+    console.log(green('Seeded orders!'))
 
-    //cartItem seeding
-    const cartItems = [
+    //orderItem seeding
+    const orderItems = [
       {
         productId: P1.id,
         quantity: 1,
-        cartId: C1.id
+        orderId: O1.id,
+        price: P1.price
       },
       {
         productId: P65.id,
         quantity: 3,
-        cartId: C1.id
+        orderId: O1.id,
+        price: P65.price
       },
       {
         productId: P77.id,
         quantity: 2,
-        cartId: C1.id
+        orderId: O1.id,
+        price: P77.price
       },
       {
         productId: P100.id,
         quantity: 1,
-        cartId: C1.id
+        orderId: O1.id,
+        price: P100.price
       },
       {
         productId: P54.id,
         quantity: 3,
-        cartId: C2.id
+        orderId: O2.id,
+        price: P54.price
       },
       {
         productId: P33.id,
         quantity: 1,
-        cartId: C3.id
+        orderId: O3.id,
+        price: P33.price
       },
       {
         productId: P34.id,
         quantity: 1,
-        cartId: C3.id
+        orderId: O3.id,
+        price: P34.price
       },
       {
         productId: P35.id,
         quantity: 1,
-        cartId: C3.id
+        orderId: O3.id,
+        price: P35.price
       },
       {
         productId: P2.id,
         quantity: 5,
-        cartId: C4.id
+        orderId: O4.id,
+        price: P2.price
       },
       {
         productId: P10.id,
         quantity: 3,
-        cartId: C4.id
+        orderId: O4.id,
+        price: P10.price
       },
       {
         productId: P98.id,
         quantity: 1,
-        cartId: C4.id
+        orderId: O4.id,
+        price: P98.price
       }
     ]
 
@@ -1072,8 +1083,8 @@ const seed = async () => {
       I9,
       I10,
       I11
-    ] = await CartItem.bulkCreate(cartItems)
-    console.log(green('Seeded cart items!'))
+    ] = await OrderItem.bulkCreate(orderItems)
+    console.log(green('Seeded order items!'))
   } catch (err) {
     console.log(red(err))
   }

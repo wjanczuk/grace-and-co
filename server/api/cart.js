@@ -1,16 +1,16 @@
 const router = require('express').Router()
-const {CartItem, Cart} = require('../db/models')
+const {OrderItem, Order} = require('../db/models')
 
 //GET /api/cart/:userId
 router.get('/:userId', async (req, res, next) => {
   try {
-    const cart = await Cart.findOne({
+    const order = await Order.findOne({
       where: {
         userId: req.params.userId
       }
     })
-    const cartItems = await cart.getProducts()
-    res.json(cartItems)
+    const orderItems = await order.getProducts()
+    res.json(orderItems)
   } catch (error) {
     next(error)
   }
@@ -19,8 +19,8 @@ router.get('/:userId', async (req, res, next) => {
 //POST /api/cart
 router.post('/', async (req, res, next) => {
   try {
-    const newCart = await Cart.create()
-    res.json(newCart)
+    const newOrder = await Order.create()
+    res.json(newOrder)
   } catch (error) {
     next(error)
   }
@@ -29,7 +29,7 @@ router.post('/', async (req, res, next) => {
 //DELETE /api/cart
 router.delete('/', async (req, res, next) => {
   try {
-    await CartItem.destroy({
+    await OrderItem.destroy({
       where: {
         id: req.body.itemId
       }
@@ -43,7 +43,7 @@ router.delete('/', async (req, res, next) => {
 //PUT /api/cart
 router.put('/', async (req, res, next) => {
   try {
-    await CartItem.update(
+    await OrderItem.update(
       {
         quantity: req.body.quantity
       },
