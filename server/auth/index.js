@@ -25,7 +25,9 @@ router.post('/signup', async (req, res, next) => {
     req.login(user, err => (err ? next(err) : res.json(user)))
   } catch (err) {
     if (err.name === 'SequelizeUniqueConstraintError') {
-      res.status(401).send('User already exists')
+      res
+        .status(401)
+        .send('This email address is already associated with an account')
     } else {
       next(err)
     }

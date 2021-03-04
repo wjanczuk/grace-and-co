@@ -1,16 +1,16 @@
 const User = require('./user')
 const Product = require('./product')
-const Cart = require('./cart')
-const CartItem = require('./cartItem')
+const Order = require('./order')
+const OrderItem = require('./orderItem')
 
-Cart.belongsToMany(Product, {through: CartItem})
-Product.belongsToMany(Cart, {through: CartItem})
-User.hasMany(Cart)
-Cart.belongsTo(User)
+Order.belongsToMany(Product, {through: OrderItem})
+Product.belongsToMany(Order, {through: OrderItem})
+User.hasMany(Order)
+Order.belongsTo(User)
 
 module.exports = {
   User,
   Product,
-  Cart,
-  CartItem
+  Order,
+  OrderItem
 }

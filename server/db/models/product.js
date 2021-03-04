@@ -29,12 +29,11 @@ const Product = db.define('product', {
     allowNull: false
   },
   price: {
-    type: Sequelize.DECIMAL(10, 2),
-    allowNull: false,
-    get() {
-      const value = this.getDataValue('price')
-      return value === null ? null : parseFloat(value)
-    }
+    type: Sequelize.INTEGER,
+    validate: {
+      min: 0
+    },
+    allowNull: false
   },
   inventory: {
     type: Sequelize.INTEGER,
@@ -43,6 +42,11 @@ const Product = db.define('product', {
     },
     allowNull: false
   }
+})
+
+//class methods
+Product.beforeCreate(product => {
+  product.price = product.price * 100
 })
 
 module.exports = Product
