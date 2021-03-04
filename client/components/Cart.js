@@ -51,4 +51,4 @@ const mapDispatch = dispatch => ({
   editQuantity: quantity => dispatch(editQuantity(quantity))
 })
 
-connect(mapState, mapDispatch)(Cart)
+export default connect(mapState, mapDispatch)(Cart)
