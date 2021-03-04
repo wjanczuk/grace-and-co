@@ -1030,7 +1030,8 @@ const seed = async () => {
       {
         productId: P54.id,
         quantity: 3,
-        orderId: O2.id
+        orderId: O2.id,
+        price: P54.price
       },
       {
         productId: P33.id,
