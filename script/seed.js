@@ -1,6 +1,6 @@
 const {green, red} = require('chalk')
 const db = require('../server/db')
-const {Product, User, Cart, CartItem} = require('../server/db/models')
+const {Product, User, Order, OrderItem} = require('../server/db/models')
 
 const seed = async () => {
   try {
@@ -963,8 +963,8 @@ const seed = async () => {
     const [U1, U2, U3, U4, U5, U6] = await User.bulkCreate(users)
     console.log(green('Seeded users!'))
 
-    //cart seeding
-    const carts = [
+    //order seeding
+    const orders = [
       {
         completed: true,
         paymentMethod: 'credit',
@@ -998,65 +998,65 @@ const seed = async () => {
       }
     ]
 
-    const [C1, C2, C3, C4] = await Cart.bulkCreate(carts)
-    console.log(green('Seeded carts!'))
+    const [O1, O2, O3, O4] = await Order.bulkCreate(orders)
+    console.log(green('Seeded orders!'))
 
-    //cartItem seeding
-    const cartItems = [
+    //orderItem seeding
+    const orderItems = [
       {
         productId: P1.id,
         quantity: 1,
-        cartId: C1.id
+        orderId: O1.id
       },
       {
         productId: P65.id,
         quantity: 3,
-        cartId: C1.id
+        orderId: O1.id
       },
       {
         productId: P77.id,
         quantity: 2,
-        cartId: C1.id
+        orderId: O1.id
       },
       {
         productId: P100.id,
         quantity: 1,
-        cartId: C1.id
+        orderId: O1.id
       },
       {
         productId: P54.id,
         quantity: 3,
-        cartId: C2.id
+        orderId: O2.id
       },
       {
         productId: P33.id,
         quantity: 1,
-        cartId: C3.id
+        orderId: O3.id
       },
       {
         productId: P34.id,
         quantity: 1,
-        cartId: C3.id
+        orderId: O3.id
       },
       {
         productId: P35.id,
         quantity: 1,
-        cartId: C3.id
+        orderId: O3.id
       },
       {
         productId: P2.id,
         quantity: 5,
-        cartId: C4.id
+        orderId: O4.id
       },
       {
         productId: P10.id,
         quantity: 3,
-        cartId: C4.id
+        orderId: O4.id
       },
       {
         productId: P98.id,
         quantity: 1,
-        cartId: C4.id
+        orderId: O4.id
       }
     ]
 
@@ -1072,8 +1072,8 @@ const seed = async () => {
       I9,
       I10,
       I11
-    ] = await CartItem.bulkCreate(cartItems)
-    console.log(green('Seeded cart items!'))
+    ] = await OrderItem.bulkCreate(orderItems)
+    console.log(green('Seeded order items!'))
   } catch (err) {
     console.log(red(err))
   }
