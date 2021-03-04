@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 
-//cartItem model
-const CartItem = db.define('cartItem', {
+//orderItem model
+const OrderItem = db.define('orderItem', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -16,7 +16,14 @@ const CartItem = db.define('cartItem', {
       max: 500
     },
     defaultValue: 1
+  },
+  price: {
+    type: Sequelize.INTEGER,
+    validate: {
+      min: 0
+    },
+    allowNull: false
   }
 })
 
-module.exports = CartItem
+module.exports = OrderItem

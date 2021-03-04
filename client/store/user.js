@@ -1,26 +1,15 @@
 import axios from 'axios'
 import history from '../history'
 
-/**
- * ACTION TYPES
- */
+//action types
 const GET_USER = 'GET_USER'
 const REMOVE_USER = 'REMOVE_USER'
 
-/**
- * INITIAL STATE
- */
-const defaultUser = {}
-
-/**
- * ACTION CREATORS
- */
+//action creators
 const getUser = user => ({type: GET_USER, user})
 const removeUser = () => ({type: REMOVE_USER})
 
-/**
- * THUNK CREATORS
- */
+//thunk creators
 export const me = () => async dispatch => {
   try {
     const res = await axios.get('/auth/me')
@@ -56,9 +45,9 @@ export const logout = () => async dispatch => {
   }
 }
 
-/**
- * REDUCER
- */
+const defaultUser = {}
+
+//reducer
 export default function(state = defaultUser, action) {
   switch (action.type) {
     case GET_USER:
