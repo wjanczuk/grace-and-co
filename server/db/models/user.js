@@ -17,49 +17,22 @@ const User = db.define('user', {
     validate: {
       notEmpty: true
     },
-    // Making `.password` act like a func hides it when serializing to JSON.
-    // This is a hack to get around Sequelize's lack of a "private" option.
     get() {
       return () => this.getDataValue('password')
     }
   },
-  first_name: {
+  firstName: {
     type: Sequelize.STRING
   },
-  last_name: {
+  lastName: {
     type: Sequelize.STRING
   },
   isAdmin: {
     type: Sequelize.BOOLEAN,
     defaultValue: false
   },
-  billing_address: {
-    type: Sequelize.STRING
-  },
-  billing_address2: {
-    type: Sequelize.STRING
-  },
-  billing_city: {
-    type: Sequelize.STRING
-  },
-  billing_state: {
-    type: Sequelize.STRING,
-    validate: {
-      notEmpty: true,
-      max: 2
-    }
-  },
-  billing_ZIP: {
-    type: Sequelize.INTEGER,
-    validate: {
-      notEmpty: true,
-      len: 5
-    }
-  },
   salt: {
     type: Sequelize.STRING,
-    // Making `.salt` act like a function hides it when serializing to JSON.
-    // This is a hack to get around Sequelize's lack of a "private" option.
     get() {
       return () => this.getDataValue('salt')
     }
@@ -71,9 +44,7 @@ const User = db.define('user', {
 
 module.exports = User
 
-/**
- * instanceMethods
- */
+//instance methods
 User.prototype.correctPassword = function(candidatePwd) {
   return User.encryptPassword(candidatePwd, this.salt()) === this.password()
 }
