@@ -20,13 +20,12 @@ import {getCart, createCart} from './store/cart'
  */
 class Routes extends Component {
   componentDidMount() {
-    const {loadInitialData, isLoggedIn, loadCart, createNewCart} = this.props
+    const {loadInitialData} = this.props
     loadInitialData()
   }
 
   render() {
     const {isLoggedIn} = this.props
-
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
@@ -35,7 +34,11 @@ class Routes extends Component {
         <Route path="/signup" component={Signup} />
         <Route path="/products/:id" component={SingleProduct} />
         <Route exact path="/products" component={AllProduct} />
-        <Route exact path="/cart" component={Cart} />
+        <Route
+          exact
+          path="/cart"
+          component={() => <Cart user={this.props.user} />}
+        />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
@@ -56,7 +59,8 @@ const mapState = state => {
   return {
     // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.id,
+    user: state.user
   }
 }
 
