@@ -21,4 +21,41 @@ router.get('/:productId', async (req, res, next) => {
   }
 })
 
+// POST  /api/products - route to create new campus
+router.post('/', async (req, res, next) => {
+  try {
+    const newProduct = await Product.create(req.body)
+    res.status(201).send(newProduct)
+    return
+  } catch (error) {
+    next(error)
+  }
+})
+
+// DELETE /api/products/:productId route to delete campus
+router.delete('/:productId', async (req, res, next) => {
+  try {
+    await Product.destroy({
+      where: {
+        productId: req.params.productId
+      }
+    })
+    res.status(204).end()
+  } catch (error) {
+    next(error)
+  }
+})
+
+// PUT /api/products/:productId - route to update product
+router.put('/:productId', async (req, res, next) => {
+  try {
+    const {productId} = req.params
+    const product = await Product.findByPk(productId)
+    const updateProduct = await product.update(req.body)
+    res.status(200).send(updateProduct)
+  } catch (error) {
+    next(error)
+  }
+})
+
 module.exports = router

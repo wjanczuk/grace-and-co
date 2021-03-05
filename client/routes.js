@@ -8,7 +8,8 @@ import {
   UserHome,
   SingleProduct,
   LandingPage,
-  AllProduct
+  AllProduct,
+  AdminAllProduct
 } from './components'
 import {me} from './store'
 // import AllProduct from './components/AllProduct'
@@ -32,6 +33,8 @@ class Routes extends Component {
         <Route path="/signup" component={Signup} />
         <Route path="/products/:id" component={SingleProduct} />
         <Route exact path="/products" component={AllProduct} />
+        {/* admin routes will need to be moved!!! */}
+        <Route exact path="/admin" component={AdminAllProduct} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
