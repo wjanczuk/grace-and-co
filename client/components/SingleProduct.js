@@ -18,7 +18,11 @@ class SingleProduct extends Component {
           <h1>Product Loading...</h1>
         ) : (
           <div>
-            <img src={singleProduct.imageUrl} alt={singleProduct.name} />
+            <img
+              src={singleProduct.imageUrl}
+              alt={singleProduct.name}
+              style={{width: '275px'}}
+            />
             <h1>{singleProduct.name}</h1>
             <h3>${singleProduct.price}</h3>
             {singleProduct.inventory === 0 && (
