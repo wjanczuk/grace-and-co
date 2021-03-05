@@ -17,11 +17,13 @@ export class AuthUsers extends React.Component {
   }
 
   render() {
+    const users = this.props.users || []
+
     return (
       <div>
         <h2>Users</h2>
 
-        {this.props.users.map(user => (
+        {users.map(user => (
           <div key={user.id}>
             <p>
               <b>
