@@ -923,40 +923,40 @@ const seed = async () => {
       {
         email: 'weronika@me.com',
         password: 'invisiblewoman1',
-        first_name: 'Weronika',
-        last_name: 'Janczuk'
+        firstName: 'Weronika',
+        lastName: 'Janczuk'
       },
       {
         email: 'victoria@me.com',
         password: 'invisiblewoman2',
-        first_name: 'Victoria',
-        last_name: 'Ho',
+        firstName: 'Victoria',
+        lastName: 'Ho',
         isAdmin: true
       },
       {
         email: 'michelle@me.com',
         password: 'invisiblewoman3',
-        first_name: 'Michelle',
-        last_name: 'Dacal',
+        firstName: 'Michelle',
+        lastName: 'Dacal',
         isAdmin: true
       },
       {
         email: 'kay@me.com',
         password: 'invisiblewoman4',
-        first_name: 'Kay',
-        last_name: 'XiongPachay'
+        firstName: 'Kay',
+        lastName: 'XiongPachay'
       },
       {
         email: 'john@me.com',
         password: 'invisiblewoman5',
-        first_name: 'John',
-        last_name: 'Doe'
+        firstName: 'John',
+        lastName: 'Doe'
       },
       {
         email: 'jane@me.com',
         password: 'invisiblewoman6',
-        first_name: 'Jane',
-        last_name: 'Doe'
+        firstName: 'Jane',
+        lastName: 'Doe'
       }
     ]
 

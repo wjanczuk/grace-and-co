@@ -14,7 +14,7 @@ import reducer, {
 const middlewares = [thunkMiddleware]
 const mockStore = configureMockStore(middlewares)
 
-describe.only('product store', () => {
+describe('product store', () => {
   let store
   let mockAxios
 
