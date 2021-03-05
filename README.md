@@ -25,7 +25,7 @@ Grace & Co. is deployed on [heroku](https://www.heroku.com/), at [Grace & Co](ht
 
 ## Developers
 
-1.  [Michelle Dacal](https://github.com/michelledacal)
-2.  [Victoria Ho](https://github.com/Victoriaho91)
-3.  [Weronika Janczuk](https://github.com/wjanczuk)
-4.  [Kay XiongPachay](https://github.com/HelloKay27)
+* [Michelle Dacal](https://github.com/michelledacal)
+* [Victoria Ho](https://github.com/Victoriaho91)
+* [Weronika Janczuk](https://github.com/wjanczuk)
+* [Kay XiongPachay](https://github.com/HelloKay27)
