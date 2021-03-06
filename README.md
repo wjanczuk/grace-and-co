@@ -1,10 +1,10 @@
-# Grace Shopper Project | Witty Project Title to Come
+# Grace Shopper | Grace & Co.
 
-_Witty project sub-title to come_
+_Grace Yourself or Your Love with Beautifully Crafted & Elegant Designs by Grace & Co._
 
-//Project Title// is a mock e-commerce website featuring earrings, created by a team of developers during the [Grace Hopper Program](https://www.gracehopper.com/) at Fullstack Academy.
+**Grace & Co.** is a mock e-commerce website featuring earrings, created by a team of developers during the [Grace Hopper Program](https://www.gracehopper.com/) at Fullstack Academy.
 
-//Project Title// is deployed on [heroku](https://www.heroku.com/).
+Grace & Co. is deployed on [heroku](https://www.heroku.com/), at [Grace & Co](https://grace-and-co.herokuapp.com/).
 
 ## Tech Stack
 
@@ -19,12 +19,13 @@ _Witty project sub-title to come_
 
 1.  Fork and clone repo.
 2.  Run `npm install`.
-3.  Run `npm run seed`.
-4.  Run `npm run start`.
+3.  Run `psql createdb graceshopper`. (Install PostgreSQL, if necessary.)
+4.  Run `npm run seed`.
+5.  Run `npm run start`.
 
 ## Developers
 
-1.  [Michelle Dacal](https://github.com/michelledacal)
-2.  [Victoria Ho](https://github.com/Victoriaho91)
-3.  [Weronika Janczuk](https://github.com/wjanczuk)
-4.  [Kay XiongPachay](https://github.com/HelloKay27)
+* [Michelle Dacal](https://github.com/michelledacal)
+* [Victoria Ho](https://github.com/Victoriaho91)
+* [Weronika Janczuk](https://github.com/wjanczuk)
+* [Kay XiongPachay](https://github.com/HelloKay27)
