@@ -7,25 +7,42 @@ describe('User model', () => {
     return db.sync({force: true})
   })
 
+  describe('instanceCreation', () => {
+    let weronika
+
+    beforeEach(async () => {
+      weronika = await User.create({
+        firstName: 'Weronika',
+        lastName: 'Janczuk',
+        email: 'weronika@me.com',
+        password: 'invisiblewoman3'
+      })
+    })
+
+    it('isAdmin defaults to false', async () => {
+      expect(weronika.isAdmin).to.be.equal(false)
+    })
+  })
+
   describe('instanceMethods', () => {
     describe('correctPassword', () => {
-      let cody
+      let weronika
 
       beforeEach(async () => {
-        cody = await User.create({
-          first_Name: 'Weronika',
-          last_Name: 'Janczuk',
+        weronika = await User.create({
+          firstName: 'Weronika',
+          lastName: 'Janczuk',
           email: 'weronika@me.com',
           password: 'invisiblewoman3'
         })
       })
 
       it('returns true if the password is correct', () => {
-        expect(cody.correctPassword('bones')).to.be.equal(true)
+        expect(weronika.correctPassword('invisiblewoman3')).to.be.equal(true)
       })
 
       it('returns false if the password is incorrect', () => {
-        expect(cody.correctPassword('bonez')).to.be.equal(false)
+        expect(weronika.correctPassword('invisiblewoman')).to.be.equal(false)
       })
     })
   })
