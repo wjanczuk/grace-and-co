@@ -49,10 +49,12 @@ router.put('/', async (req, res, next) => {
       },
       {
         where: {
-          id: req.body.itemId
+          id: req.body.id
         }
       }
     )
+    const updatedItem = await OrderItem.findByPk(req.body.id)
+    res.send(updatedItem)
   } catch (error) {
     next(error)
   }
