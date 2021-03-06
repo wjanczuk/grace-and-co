@@ -14,17 +14,15 @@ const removedItem = itemId => ({
   type: REMOVE_ORDER_ITEM,
   itemId
 })
-const editedQuantity = (itemId, quantity) => ({
+const editedQuantity = itemObj => ({
   type: EDIT_QUANTITY,
-  itemId,
-  quantity
+  itemObj
 })
 
 // THUNK CREATORS
 export const getOrder = userId => {
   return async dispatch => {
     try {
-      console.log('USER ID ----->', userId)
       const {data: order} = await axios.get(`/api/cart/${userId}`)
       dispatch(gotOrder(order))
     } catch (error) {
@@ -35,18 +33,19 @@ export const getOrder = userId => {
 export const removeItem = itemId => {
   return async dispatch => {
     try {
-      await axios.delete('/api/cart', {itemId})
+      await axios.delete('/api/cart', {data: {itemId}})
       dispatch(removedItem(itemId))
     } catch (error) {
       console.log('Error removing item from server')
     }
   }
 }
-export const editQuantity = (itemId, newQuantity) => {
+export const editQuantity = itemObj => {
   return async dispatch => {
     try {
-      await axios.put('/api/cart', {quantity: newQuantity, itemId})
-      dispatch(editedQuantity(itemId, newQuantity))
+      const {data: updatedItem} = await axios.put('/api/cart', itemObj)
+      console.log('After edit', updatedItem)
+      dispatch(editedQuantity(updatedItem))
     } catch (error) {
       console.log('Error in editing quantity')
     }
@@ -67,14 +66,14 @@ export default function(state = initialState, action) {
     case REMOVE_ORDER_ITEM:
       return {
         ...state,
-        items: state.order.filter(item => item.id !== action.itemId)
+        items: state.items.filter(item => item.orderItem.id !== action.itemId)
       }
     case EDIT_QUANTITY:
       return {
         ...state,
-        items: state.order.map(item => {
-          if (item.id === action.itemId) {
-            item.quantity = action.quantity
+        items: state.items.map(item => {
+          if (item.orderItem.id === action.itemObj.id) {
+            item.orderItem.quantity = action.itemObj.quantity
           }
           return item
         })

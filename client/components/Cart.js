@@ -1,15 +1,30 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {editQuantity, getOrder, removeItem} from '../store/order'
 
 class Cart extends React.Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
+    this.handleClickMinus = this.handleClickMinus.bind(this)
+    this.handleClickPlus = this.handleClickPlus.bind(this)
   }
 
   async componentDidMount() {
-    await this.props.getOrder(this.props.user.id)
+    if (this.props.user.id) {
+      await this.props.getOrder(this.props.user.id)
+    }
+  }
+
+  handleClickPlus(id, quantity) {
+    quantity++
+    const itemObj = {id, quantity}
+    this.props.editQuantity(itemObj)
+  }
+
+  handleClickMinus(id, quantity) {
+    quantity--
+    const itemObj = {id, quantity}
+    this.props.editQuantity(itemObj)
   }
 
   render() {
@@ -31,7 +46,10 @@ class Cart extends React.Component {
               <span>QTY: {item.orderItem.quantity}</span>
               <button
                 onClick={() =>
-                  this.props.editQuantity(++item.orderItem.quantity)
+                  this.handleClickPlus(
+                    item.orderItem.id,
+                    item.orderItem.quantity
+                  )
                 }
                 type="submit"
               >
@@ -39,7 +57,10 @@ class Cart extends React.Component {
               </button>
               <button
                 onClick={() =>
-                  this.props.editQuantity(--item.orderItem.quantity)
+                  this.handleClickMinus(
+                    item.orderItem.id,
+                    item.orderItem.quantity
+                  )
                 }
                 type="submit"
               >
@@ -64,7 +85,6 @@ class Cart extends React.Component {
 }
 
 const mapState = state => {
-  console.log('mapping state...')
   return {
     orderItems: state.order.items,
     userId: state.user.id
