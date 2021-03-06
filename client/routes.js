@@ -9,7 +9,7 @@ import {
   SingleProduct,
   LandingPage,
   AllProduct,
-  AuthUsers,
+  AdminAllUser,
   AdminAllProduct
 } from './components'
 import {me} from './store'
@@ -31,22 +31,24 @@ class Routes extends Component {
         <Route exact path="/" component={LandingPage} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route path="/products/:id" component={SingleProduct} />
+        <Route exact path="/products/:id" component={SingleProduct} />
         <Route exact path="/products" component={AllProduct} />
 
-        {isLoggedIn && (
+        {isAdmin ? (
           <Switch>
-            {/* Routes placed here are only available after logging in */}
-
+            {/* Routes placed here are only available to admins */}
+            <Route exact path="/home" component={UserHome} />
+            <Route exact path="/admin/products" component={AdminAllProduct} />
+            <Route exact path="/admin/users" component={AdminAllUser} />
+          </Switch>
+        ) : isLoggedIn ? (
+          <Switch>
             <Route path="/home" component={UserHome} />
           </Switch>
+        ) : (
+          ''
         )}
-        {isAdmin && (
-          <Switch>
-            <Route exact path="/admin" component={AdminAllProduct} />
-            <Route path="/users" component={AuthUsers} />
-          </Switch>
-        )}
+
         {/* Displays our Login component as a fallback */}
         <Route component={Login} />
       </Switch>
@@ -83,5 +85,6 @@ export default withRouter(connect(mapState, mapDispatch)(Routes))
  */
 Routes.propTypes = {
   loadInitialData: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired
+  isLoggedIn: PropTypes.bool.isRequired,
+  isAdmin: PropTypes.bool.isRequired
 }

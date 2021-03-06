@@ -1,15 +1,21 @@
 import axios from 'axios'
 
-// action types
+//action types
 const GOT_PRODUCTS = 'GOT_PRODUCTS'
+const GOT_PRODUCTS_ADMIN = 'GOT_PRODUCTS_ADMIN'
 const GOT_SINGLE_PRODUCT = 'GOT_SINGLE_PRODUCT'
 const ADDED_PRODUCT = 'ADDED_PRODUCT'
 const DELETED_PRODUCT = 'DELETED_PRODUCT'
 const UPDATED_PRODUCT = 'UPDATED_PRODUCT'
 
-// action creators
+//action creators
 const gotProducts = products => ({
   type: GOT_PRODUCTS,
+  products
+})
+
+const gotProductsAdmin = products => ({
+  type: GOT_PRODUCTS_ADMIN,
   products
 })
 
@@ -31,7 +37,7 @@ export const updatedProduct = updated => ({
   updated
 })
 
-// thunk creators
+//thunk creators
 export const getProducts = () => {
   return async dispatch => {
     try {
@@ -39,6 +45,17 @@ export const getProducts = () => {
       dispatch(gotProducts(products))
     } catch (error) {
       console.log('Error in getProducts')
+    }
+  }
+}
+
+export const getProductsAdmin = () => {
+  return async dispatch => {
+    try {
+      const {data: products} = await axios.get('/api/admin/products')
+      dispatch(gotProductsAdmin(products))
+    } catch (error) {
+      console.log('Error in getProductsAdmin')
     }
   }
 }
@@ -53,11 +70,10 @@ export const getSingleProduct = productId => {
     }
   }
 }
-//ADD ADD THUNK ----------
+
 export const addProduct = newProduct => {
   return async dispatch => {
     try {
-      //PUT IN PATH
       const {data: product} = await axios.post('/api/prodcuts', newProduct)
       dispatch(addedProduct(product))
     } catch (error) {
@@ -66,11 +82,9 @@ export const addProduct = newProduct => {
   }
 }
 
-//ADD DELETE THUNK  -----------
 export const deleteProduct = productId => {
   return async dispatch => {
     try {
-      // PUT IN PATH
       await axios.delete(`/api/products/${productId}`)
       dispatch(deletedProduct(productId))
     } catch (error) {
@@ -78,11 +92,10 @@ export const deleteProduct = productId => {
     }
   }
 }
-//ADD UPDATE THUNK  ------------
+
 export const updateProduct = (productId, update) => {
   return async dispatch => {
     try {
-      //PUT IN PATH
       const {data: updated} = await axios.put(
         `/api/products/${productId}`,
         update
@@ -99,9 +112,15 @@ const initialState = {
   selected: {}
 }
 
+//reducer
 export default function(state = initialState, action) {
   switch (action.type) {
     case GOT_PRODUCTS:
+      return {
+        ...state,
+        all: action.products
+      }
+    case GOT_PRODUCTS_ADMIN:
       return {
         ...state,
         all: action.products

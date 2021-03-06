@@ -1,12 +1,12 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {deleteProduct, getProducts} from '../store/products'
+import {deleteProduct, getProductsAdmin} from '../store/products'
 import AdminProductUpdateForm from './AdminProductUpdateForm'
 import AdminAddProductForm from './AdminAddProductForm'
 
 class AdminAllProduct extends React.Component {
   componentDidMount() {
-    this.props.getProducts()
+    this.props.getProductsAdmin()
   }
 
   render() {
@@ -73,7 +73,7 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    getProducts: () => dispatch(getProducts()),
+    getProductsAdmin: () => dispatch(getProductsAdmin()),
     deleteProduct: () => dispatch(deleteProduct())
   }
 }

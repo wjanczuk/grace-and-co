@@ -1,10 +1,15 @@
 const router = require('express').Router()
 const {Product} = require('../db/models')
+const {adminAuth} = require('./adminAuth')
 
 // GET /api/products
 router.get('/', async (req, res, next) => {
   try {
-    const products = await Product.findAll()
+    const products = await Product.findAll({
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'inventory']
+      }
+    })
     res.json(products)
   } catch (error) {
     next(error)
@@ -21,8 +26,8 @@ router.get('/:productId', async (req, res, next) => {
   }
 })
 
-// POST  /api/products - route to create new campus
-router.post('/', async (req, res, next) => {
+// POST  /api/products
+router.post('/', adminAuth, async (req, res, next) => {
   try {
     const newProduct = await Product.create(req.body)
     res.status(201).send(newProduct)
@@ -32,8 +37,8 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-// DELETE /api/products/:productId route to delete campus
-router.delete('/:productId', async (req, res, next) => {
+// DELETE /api/products/:productId
+router.delete('/:productId', adminAuth, async (req, res, next) => {
   try {
     await Product.destroy({
       where: {
@@ -46,8 +51,8 @@ router.delete('/:productId', async (req, res, next) => {
   }
 })
 
-// PUT /api/products/:productId - route to update product
-router.put('/:productId', async (req, res, next) => {
+// PUT /api/products/:productId
+router.put('/:productId', adminAuth, async (req, res, next) => {
   try {
     const {productId} = req.params
     const product = await Product.findByPk(productId)

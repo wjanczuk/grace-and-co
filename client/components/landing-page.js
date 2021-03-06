@@ -4,14 +4,8 @@ import {Link} from 'react-router-dom'
 const LandingPage = () => {
   return (
     <div className="home-page">
-      <h1>Welcome!</h1>
-      <div className="home-page-body">
-        <div>
-          <Link to="/products">
-            <span id="homepage-students">All Products</span>
-          </Link>
-        </div>
-      </div>
+      <h1>Welcome to Grace & Co.!</h1>
+      <div className="home-page-body" />
 
       <div className="home-page-content">
         <p>
