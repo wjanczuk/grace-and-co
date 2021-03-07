@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {OrderItem, Order} = require('../db/models')
+const {OrderItem, Order, User} = require('../db/models')
 
 //GET /api/cart/:userId
 router.get('/:userId', async (req, res, next) => {
@@ -19,7 +19,17 @@ router.get('/:userId', async (req, res, next) => {
 //POST /api/cart
 router.post('/', async (req, res, next) => {
   try {
+    let user
+    console.log('REQ BODY', req.body)
+    if (req.body) {
+      user = await User.findOrCreate({
+        where: {
+          email: req.body.email
+        }
+      })
+    }
     const newOrder = await Order.create()
+    newOrder.setUser(user[0])
     res.json(newOrder)
   } catch (error) {
     next(error)
@@ -55,6 +65,16 @@ router.put('/', async (req, res, next) => {
     )
     const updatedItem = await OrderItem.findByPk(req.body.id)
     res.send(updatedItem)
+  } catch (error) {
+    next(error)
+  }
+})
+
+// POST /api/cart/items
+router.post('/items', async (req, res, next) => {
+  try {
+    const order = await OrderItem.bulkCreate(req.body.products)
+    res.send(order)
   } catch (error) {
     next(error)
   }

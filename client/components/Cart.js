@@ -1,84 +1,167 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {editQuantity, getOrder, removeItem} from '../store/order'
+import {
+  editGuestQuantity,
+  removeGuestItem,
+  guestCheckout
+} from '../store/guestCart'
 
 class Cart extends React.Component {
   constructor() {
     super()
+    this.state = {
+      cart: [],
+      displayCheckout: false,
+      email: ''
+    }
     this.handleClickMinus = this.handleClickMinus.bind(this)
     this.handleClickPlus = this.handleClickPlus.bind(this)
+    this.handleRemove = this.handleRemove.bind(this)
+    this.handleCheckout = this.handleCheckout.bind(this)
+    this.startCheckout = this.startCheckout.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
 
   async componentDidMount() {
     if (this.props.user.id) {
       await this.props.getOrder(this.props.user.id)
+      this.setState({
+        cart: this.props.orderItems
+      })
+    } else if (localStorage.getItem('cart')) {
+      const localCart = JSON.parse(localStorage.getItem('cart')).items
+      this.setState({
+        cart: localCart
+      })
     }
   }
 
   handleClickPlus(id, quantity) {
     quantity++
     const itemObj = {id, quantity}
-    this.props.editQuantity(itemObj)
+    if (this.props.user.id) {
+      this.props.editQuantity(itemObj)
+    } else {
+      const localCart = editGuestQuantity(id, quantity)
+      this.setState({
+        cart: localCart
+      })
+    }
   }
 
   handleClickMinus(id, quantity) {
     quantity--
     const itemObj = {id, quantity}
-    this.props.editQuantity(itemObj)
+    if (this.props.user.id) {
+      this.props.editQuantity(itemObj)
+    } else {
+      editGuestQuantity(id, quantity)
+      const localCart = JSON.parse(localStorage.getItem('cart')).items
+      this.setState({
+        cart: localCart
+      })
+    }
+  }
+
+  async handleRemove(itemId, productId) {
+    if (this.props.user.id) {
+      await this.props.removeItem(itemId)
+      this.setState({
+        cart: this.props.orderItems
+      })
+    } else {
+      const localCart = removeGuestItem(productId)
+      this.setState({
+        cart: localCart
+      })
+    }
+  }
+
+  handleCheckout(evt) {
+    evt.preventDefault()
+    const orderObj = {
+      products: this.state.cart,
+      email: this.state.email
+    }
+    guestCheckout(orderObj)
+  }
+
+  handleChange(evt) {
+    this.setState({
+      email: evt.target.value
+    })
+  }
+
+  startCheckout() {
+    this.setState({
+      displayCheckout: true
+    })
   }
 
   render() {
-    const {userId, orderItems} = this.props
-
+    const cart = this.props.user.id ? this.props.orderItems : this.state.cart
+    console.log(cart)
     return (
       <div>
-        {userId === undefined ? (
-          <h1>Cart Loading...</h1>
-        ) : (
-          orderItems.map(item => (
-            <div key={item.id}>
-              <img
-                src={item.imageUrl}
-                alt={item.name}
-                style={{width: '275px'}}
-              />
-              <h1>{item.name}</h1>
-              <span>QTY: {item.orderItem.quantity}</span>
-              <button
-                onClick={() =>
-                  this.handleClickPlus(
-                    item.orderItem.id,
-                    item.orderItem.quantity
-                  )
-                }
-                type="submit"
-              >
-                +
-              </button>
-              <button
-                onClick={() =>
-                  this.handleClickMinus(
-                    item.orderItem.id,
-                    item.orderItem.quantity
-                  )
-                }
-                type="submit"
-              >
-                -
-              </button>
-              <button
-                onClick={() => this.props.removeItem(item.orderItem.id)}
-                type="submit"
-              >
-                Remove
-              </button>
-            </div>
-          ))
+        {// (!this.props.userId && !this.state.cart.length) ? ( // cannot get this to work and also say cart is empty after loading ):
+        //     <h1>Cart Loading...</h1>
+        //   ) : (
+        this.state.cart.map(item => (
+          <div key={item.id}>
+            <img src={item.imageUrl} alt={item.name} style={{width: '275px'}} />
+            <h1>{item.name}</h1>
+            <span>QTY: {item.orderItem.quantity}</span>
+            <button
+              onClick={() =>
+                this.handleClickPlus(item.orderItem.id, item.orderItem.quantity)
+              }
+              type="submit"
+            >
+              +
+            </button>
+            <button
+              onClick={() =>
+                this.handleClickMinus(
+                  item.orderItem.id,
+                  item.orderItem.quantity
+                )
+              }
+              type="submit"
+            >
+              -
+            </button>
+            <button
+              onClick={() => this.handleRemove(item.orderItem.id, item.id)}
+              type="submit"
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+
+        {!cart.length && <h1>Your Cart Is Empty</h1>}
+        {this.state.cart.length && (
+          <button type="submit" onClick={() => this.startCheckout()}>
+            Checkout
+          </button>
         )}
 
-        {/* { (userId && !orderItems.length) &&
-            <h1>Your Cart Is Empty</h1>
-        } */}
+        {this.state.displayCheckout &&
+          !this.props.user.id && (
+            <form onSubmit={this.handleCheckout}>
+              <label htmlFor="email">
+                Please enter your email before continuing to checkout:{' '}
+              </label>
+              <input
+                type="text"
+                name="email"
+                value={this.state.email}
+                onChange={this.handleChange}
+              />
+              <button type="submit">Continue</button>
+            </form>
+          )}
       </div>
     )
   }
