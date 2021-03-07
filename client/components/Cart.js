@@ -26,9 +26,6 @@ class Cart extends React.Component {
   async componentDidMount() {
     if (this.props.user.id) {
       await this.props.getOrder(this.props.user.id)
-      this.setState({
-        cart: this.props.orderItems
-      })
     } else if (localStorage.getItem('cart')) {
       const localCart = JSON.parse(localStorage.getItem('cart')).items
       this.setState({
@@ -67,9 +64,6 @@ class Cart extends React.Component {
   async handleRemove(itemId, productId) {
     if (this.props.user.id) {
       await this.props.removeItem(itemId)
-      this.setState({
-        cart: this.props.orderItems
-      })
     } else {
       const localCart = removeGuestItem(productId)
       this.setState({
@@ -98,8 +92,16 @@ class Cart extends React.Component {
       displayCheckout: true
     })
   }
-
   render() {
+    const {userId, orderItems} = this.props
+    console.log(orderItems)
+
+    let displayMessage
+
+    if (userId === undefined) {
+      displayMessage = true
+    }
+
     const cart = this.props.user.id ? this.props.orderItems : this.state.cart
     console.log(cart)
     return (
@@ -107,7 +109,7 @@ class Cart extends React.Component {
         {// (!this.props.userId && !this.state.cart.length) ? ( // cannot get this to work and also say cart is empty after loading ):
         //     <h1>Cart Loading...</h1>
         //   ) : (
-        this.state.cart.map(item => (
+        cart.map(item => (
           <div key={item.id}>
             <img src={item.imageUrl} alt={item.name} style={{width: '275px'}} />
             <h1>{item.name}</h1>
@@ -141,7 +143,7 @@ class Cart extends React.Component {
         ))}
 
         {!cart.length && <h1>Your Cart Is Empty</h1>}
-        {this.state.cart.length && (
+        {cart.length && (
           <button type="submit" onClick={() => this.startCheckout()}>
             Checkout
           </button>
@@ -168,6 +170,7 @@ class Cart extends React.Component {
 }
 
 const mapState = state => {
+  console.log('mapping to state -->', state)
   return {
     orderItems: state.order.items,
     userId: state.user.id
