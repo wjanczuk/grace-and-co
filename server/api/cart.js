@@ -112,6 +112,7 @@ router.put('/', async (req, res, next) => {
 router.post('/items', async (req, res, next) => {
   try {
     const order = await OrderItem.bulkCreate(req.body.products)
+
     res.send(order)
   } catch (error) {
     next(error)
