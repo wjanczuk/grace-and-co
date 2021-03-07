@@ -40,14 +40,12 @@ const Order = db.define('order', {
   billingState: {
     type: Sequelize.STRING,
     validate: {
-      notEmpty: true,
       max: 2
     }
   },
   billingZIP: {
     type: Sequelize.INTEGER,
     validate: {
-      notEmpty: true,
       len: 5
     }
   },
@@ -75,9 +73,8 @@ const Order = db.define('order', {
 })
 
 //instance methods
-Order.prototype.updateCartTotals = async function(price, quantity) {
+Order.prototype.updateOrderSubtotal = async function(price, quantity) {
   this.orderSubtotal += price * quantity
-  this.totalQuantity += quantity
   await this.save()
 }
 

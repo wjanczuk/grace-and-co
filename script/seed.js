@@ -966,34 +966,37 @@ const seed = async () => {
     //order seeding
     const orders = [
       {
-        completed: true,
+        status: 'completed',
         paymentMethod: 'credit',
-        shipping_address: '1050 1st Ave.',
-        shipping_city: 'New York City',
-        shipping_state: 'NY',
-        shipping_ZIP: 10004,
+        shippingAddress: '1050 1st Ave.',
+        shippingCity: 'New York City',
+        shippingState: 'NY',
+        shippingZIP: 10004,
+        billingAddress: '1050 1st Ave.',
+        billingCity: 'New York City',
+        billingState: 'NY',
+        billingZIP: 10004,
         userId: U1.id
       },
       {
-        completed: false,
+        status: 'in-progress',
         userId: U2.id
       },
       {
-        completed: true,
+        status: 'completed',
         paymentMethod: 'venmo',
-        shipping_address: '2050 2nd Ave.',
-        shipping_city: 'Minneapolis',
-        shipping_state: 'MN',
-        shipping_ZIP: 55408,
+        shippingAddress: '2050 2nd Ave.',
+        shippingCity: 'Minneapolis',
+        shippingState: 'MN',
+        shippingZIP: 55408,
+        billingAddress: '2050 2nd Ave.',
+        billingCity: 'Minneapolis',
+        billingState: 'MN',
+        billingZIP: 55408,
         userId: U3.id
       },
       {
-        completed: true,
-        paymentMethod: 'debit',
-        shipping_address: '3050 3rd Ave.',
-        shipping_city: 'San Francisco',
-        shipping_state: 'CA',
-        shipping_ZIP: 94104,
+        status: 'in-progress',
         userId: U4.id
       }
     ]
