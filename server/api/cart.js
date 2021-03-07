@@ -20,18 +20,34 @@ router.get('/:userId', async (req, res, next) => {
 //POST /api/cart/  //FIND OR CREATE CART/ORDER
 router.post('/', async (req, res, next) => {
   try {
+    console.log('req session', req.session)
+
     let user
-    console.log('REQ BODY', req.body)
     if (req.body) {
       user = await User.findOrCreate({
         where: {
           email: req.body.email
         }
       })
+      user = user[0]
+    } else {
+      user = req.session.passport
     }
-    const newOrder = await Order.create()
-    newOrder.setUser(user[0])
-    res.json(newOrder)
+
+    let order = await Order.findOrCreate({
+      where: {
+        userId: user.id
+      }
+    })
+    if (!req.body) {
+      order = await order[0].getProducts()
+    } else {
+      order = order[0]
+    }
+
+    console.log('ORDER ==>', order)
+
+    res.json(order)
   } catch (error) {
     next(error)
   }

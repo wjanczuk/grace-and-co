@@ -17,16 +17,16 @@ class SingleProduct extends Component {
     super(props)
 
     this.handleAddCart = this.handleAddCart.bind(this)
-    this.handleAddToCart = this.handleAddToCart.bind(this)
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     this.props.loadSingleProduct(this.props.match.params.id)
-    await this.props.loadSingleProduct(this.props.match.params.id)
-    this.props.createOrder() //if user logged in, findOrCreate Order/cart
+    if (this.props.userId) {
+      this.props.createOrder() //if user logged in, findOrCreate Order/cart
+    }
   }
 
-  handleAddToCart(id) {
+  handleAddCart(singleProductId) {
     if (!this.props.userId) {
       if (!localStorage.getItem('cart')) {
         const emptyCart = {
@@ -34,26 +34,24 @@ class SingleProduct extends Component {
         }
         localStorage.setItem('cart', JSON.stringify(emptyCart)) // create cart for guest user
       }
-      addToGuestCart(id)
-    }
-  }
-
-  handleAddCart(singleProductId) {
-    let {singleProduct, orderItems} = this.props
-
-    let selectedItem
-    orderItems = orderItems.map(item => {
-      if (item.id === singleProduct.id) {
-        selectedItem = item
-      }
-      return item
-    })
-
-    if (selectedItem) {
-      selectedItem.orderItem.quantity++
-      this.props.editQuantity(selectedItem.orderItem)
+      addToGuestCart(singleProductId)
     } else {
-      this.props.createOrderItem(singleProduct)
+      let {singleProduct, orderItems} = this.props
+
+      let selectedItem
+      orderItems = orderItems.map(item => {
+        if (item.id === singleProduct.id) {
+          selectedItem = item
+        }
+        return item
+      })
+
+      if (selectedItem) {
+        selectedItem.orderItem.quantity++
+        this.props.editQuantity(selectedItem.orderItem)
+      } else {
+        this.props.createOrderItem(singleProduct)
+      }
     }
   }
 

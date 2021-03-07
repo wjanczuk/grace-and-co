@@ -43,7 +43,8 @@ export const guestCheckout = async orderObj => {
       price: product.price
     }))
     const {data: items} = await axios.post('/api/cart/items', orderObj)
-    console.log(items)
+    localStorage.removeItem('cart')
+    return items
   } catch (error) {
     console.log('Error')
   }
