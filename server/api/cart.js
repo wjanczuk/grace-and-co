@@ -111,8 +111,10 @@ router.put('/', async (req, res, next) => {
 // POST /api/cart/items
 router.post('/items', async (req, res, next) => {
   try {
-    const order = await OrderItem.bulkCreate(req.body.products)
-
+    const order = await Order.findByPk(req.body.products[0].orderId)
+    await order.update({
+      status: 'completed'
+    })
     res.send(order)
   } catch (error) {
     next(error)

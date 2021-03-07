@@ -27,6 +27,7 @@ class SingleProduct extends Component {
   }
 
   handleAddCart(singleProductId) {
+    console.log('userId-->', this.props.userId)
     if (!this.props.userId) {
       if (!localStorage.getItem('cart')) {
         const emptyCart = {
