@@ -79,6 +79,9 @@ class Cart extends React.Component {
       email: this.state.email
     }
     guestCheckout(orderObj)
+    this.setState({
+      cart: []
+    })
   }
 
   handleChange(evt) {
@@ -93,17 +96,8 @@ class Cart extends React.Component {
     })
   }
   render() {
-    const {userId, orderItems} = this.props
-    console.log(orderItems)
-
-    let displayMessage
-
-    if (userId === undefined) {
-      displayMessage = true
-    }
-
     const cart = this.props.user.id ? this.props.orderItems : this.state.cart
-    console.log(cart)
+
     return (
       <div>
         {// (!this.props.userId && !this.state.cart.length) ? ( // cannot get this to work and also say cart is empty after loading ):
@@ -170,7 +164,6 @@ class Cart extends React.Component {
 }
 
 const mapState = state => {
-  console.log('mapping to state -->', state)
   return {
     orderItems: state.order.items,
     userId: state.user.id

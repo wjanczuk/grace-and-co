@@ -20,8 +20,6 @@ router.get('/:userId', async (req, res, next) => {
 //POST /api/cart/  //FIND OR CREATE CART/ORDER
 router.post('/', async (req, res, next) => {
   try {
-    console.log('req session', req.session)
-
     let user
     if (req.body) {
       user = await User.findOrCreate({
@@ -45,8 +43,31 @@ router.post('/', async (req, res, next) => {
       order = order[0]
     }
 
-    console.log('ORDER ==>', order)
+    res.json(order)
+  } catch (error) {
+    next(error)
+  }
+})
 
+router.post('/:productId', async (req, res, next) => {
+  try {
+    let order
+    let orderItem
+    let checkUser = req.session.passport
+    order = await Order.findOne({
+      where: {
+        userId: checkUser.user
+      },
+      include: [Product]
+    })
+    orderItem = await OrderItem.findOrCreate({
+      where: {
+        productId: req.params.productId,
+        orderId: order.id,
+        price: req.body.product.price
+      }
+    })
+    order = await order.getProducts()
     res.json(order)
   } catch (error) {
     next(error)
@@ -81,7 +102,6 @@ router.put('/', async (req, res, next) => {
       }
     )
     const updatedItem = await OrderItem.findByPk(req.body.id)
-    console.log(updatedItem)
     res.send(updatedItem)
   } catch (error) {
     next(error)

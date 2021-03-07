@@ -56,7 +56,6 @@ export const editQuantity = itemObj => {
   return async dispatch => {
     try {
       const {data: updatedItem} = await axios.put('/api/cart', itemObj)
-      console.log('After edit', updatedItem)
       dispatch(editedQuantity(updatedItem))
     } catch (error) {
       console.log('Error in editing quantity')
@@ -105,7 +104,6 @@ export default function(state = initialState, action) {
         items: state.items.filter(item => item.orderItem.id !== action.itemId)
       }
     case EDIT_QUANTITY:
-      console.log('state in before editQTY-->', state)
       return {
         ...state,
         items: state.items.map(item => {
@@ -121,8 +119,6 @@ export default function(state = initialState, action) {
         items: action.order
       }
     case CREATE_ORDERITEM:
-      console.log('state before create_orderItem-->', state)
-
       return {
         ...state,
         items: action.order
