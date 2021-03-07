@@ -4,6 +4,8 @@ import axios from 'axios'
 const GOT_ORDER = 'GOT_ORDER'
 const REMOVE_ORDER_ITEM = 'REMOVE_ORDER_ITEM'
 const EDIT_QUANTITY = 'EDIT_QUANTITY'
+const CREATE_ORDER = 'CREATE_ORDER'
+const CREATE_ORDERITEM = 'CREATED_ORDERITEM'
 
 // ACTION CREATORS
 const gotOrder = order => ({
@@ -17,6 +19,16 @@ const removedItem = itemId => ({
 const editedQuantity = itemObj => ({
   type: EDIT_QUANTITY,
   itemObj
+})
+
+const createdOrder = order => ({
+  type: CREATE_ORDER,
+  order
+})
+
+const createdOrderItem = order => ({
+  type: CREATE_ORDERITEM,
+  order
 })
 
 // THUNK CREATORS
@@ -52,6 +64,30 @@ export const editQuantity = itemObj => {
   }
 }
 
+export const createOrder = () => {
+  return async dispatch => {
+    try {
+      const {data: order} = await axios.post('/api/cart/')
+      dispatch(createdOrder(order))
+    } catch (error) {
+      console.log('error creating new cart from server')
+    }
+  }
+}
+
+export const createOrderItem = product => {
+  return async dispatch => {
+    try {
+      const {data: order} = await axios.post(`/api/cart/${product.id}`, {
+        product
+      })
+      dispatch(createdOrderItem(order))
+    } catch (error) {
+      console.log('error creating new cart item from server')
+    }
+  }
+}
+
 const initialState = {
   items: []
 }
@@ -69,6 +105,7 @@ export default function(state = initialState, action) {
         items: state.items.filter(item => item.orderItem.id !== action.itemId)
       }
     case EDIT_QUANTITY:
+      console.log('state in before editQTY-->', state)
       return {
         ...state,
         items: state.items.map(item => {
@@ -77,6 +114,18 @@ export default function(state = initialState, action) {
           }
           return item
         })
+      }
+    case CREATE_ORDER:
+      return {
+        ...state,
+        items: action.order
+      }
+    case CREATE_ORDERITEM:
+      console.log('state before create_orderItem-->', state)
+
+      return {
+        ...state,
+        items: action.order
       }
     default:
       return state

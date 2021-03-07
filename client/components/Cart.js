@@ -88,10 +88,6 @@ class Cart extends React.Component {
             )
           ]
         )}
-
-        {/* { !orderItems.length &&
-            <h1>Your Cart Is Empty</h1>
-        } */}
       </div>
     )
   }
