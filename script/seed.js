@@ -923,40 +923,40 @@ const seed = async () => {
       {
         email: 'weronika@me.com',
         password: 'invisiblewoman1',
-        first_name: 'Weronika',
-        last_name: 'Janczuk'
+        firstName: 'Weronika',
+        lastName: 'Janczuk'
       },
       {
         email: 'victoria@me.com',
         password: 'invisiblewoman2',
-        first_name: 'Victoria',
-        last_name: 'Ho',
+        firstName: 'Victoria',
+        lastName: 'Ho',
         isAdmin: true
       },
       {
         email: 'michelle@me.com',
         password: 'invisiblewoman3',
-        first_name: 'Michelle',
-        last_name: 'Dacal',
+        firstName: 'Michelle',
+        lastName: 'Dacal',
         isAdmin: true
       },
       {
         email: 'kay@me.com',
         password: 'invisiblewoman4',
-        first_name: 'Kay',
-        last_name: 'XiongPachay'
+        firstName: 'Kay',
+        lastName: 'XiongPachay'
       },
       {
         email: 'john@me.com',
         password: 'invisiblewoman5',
-        first_name: 'John',
-        last_name: 'Doe'
+        firstName: 'John',
+        lastName: 'Doe'
       },
       {
         email: 'jane@me.com',
         password: 'invisiblewoman6',
-        first_name: 'Jane',
-        last_name: 'Doe'
+        firstName: 'Jane',
+        lastName: 'Doe'
       }
     ]
 
@@ -966,34 +966,37 @@ const seed = async () => {
     //order seeding
     const orders = [
       {
-        completed: true,
+        status: 'completed',
         paymentMethod: 'credit',
-        shipping_address: '1050 1st Ave.',
-        shipping_city: 'New York City',
-        shipping_state: 'NY',
-        shipping_ZIP: 10004,
+        shippingAddress: '1050 1st Ave.',
+        shippingCity: 'New York City',
+        shippingState: 'NY',
+        shippingZIP: 10004,
+        billingAddress: '1050 1st Ave.',
+        billingCity: 'New York City',
+        billingState: 'NY',
+        billingZIP: 10004,
         userId: U1.id
       },
       {
-        completed: false,
+        status: 'in-progress',
         userId: U2.id
       },
       {
-        completed: true,
+        status: 'completed',
         paymentMethod: 'venmo',
-        shipping_address: '2050 2nd Ave.',
-        shipping_city: 'Minneapolis',
-        shipping_state: 'MN',
-        shipping_ZIP: 55408,
+        shippingAddress: '2050 2nd Ave.',
+        shippingCity: 'Minneapolis',
+        shippingState: 'MN',
+        shippingZIP: 55408,
+        billingAddress: '2050 2nd Ave.',
+        billingCity: 'Minneapolis',
+        billingState: 'MN',
+        billingZIP: 55408,
         userId: U3.id
       },
       {
-        completed: true,
-        paymentMethod: 'debit',
-        shipping_address: '3050 3rd Ave.',
-        shipping_city: 'San Francisco',
-        shipping_state: 'CA',
-        shipping_ZIP: 94104,
+        status: 'in-progress',
         userId: U4.id
       }
     ]
