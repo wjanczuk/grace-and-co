@@ -1,12 +1,13 @@
 const router = require('express').Router()
-const {OrderItem, Order, User} = require('../db/models')
+const {OrderItem, Order, Product, User} = require('../db/models')
 
 //GET /api/cart/:userId
 router.get('/:userId', async (req, res, next) => {
   try {
     const order = await Order.findOne({
       where: {
-        userId: req.params.userId
+        userId: req.params.userId,
+        status: 'in-progress'
       }
     })
     const orderItems = await order.getProducts()
@@ -16,7 +17,7 @@ router.get('/:userId', async (req, res, next) => {
   }
 })
 
-//POST /api/cart
+//POST /api/cart/  //FIND OR CREATE CART/ORDER
 router.post('/', async (req, res, next) => {
   try {
     let user
@@ -64,6 +65,7 @@ router.put('/', async (req, res, next) => {
       }
     )
     const updatedItem = await OrderItem.findByPk(req.body.id)
+    console.log(updatedItem)
     res.send(updatedItem)
   } catch (error) {
     next(error)

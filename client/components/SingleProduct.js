@@ -2,14 +2,28 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {getSingleProduct} from '../store/products'
 import {addToGuestCart} from '../store/guestCart'
+import {
+  addToOrder,
+  createOrder,
+  createOrderItem,
+  editQuantity
+} from '../store/order'
 
 //api/products/:id
 //dispatches to redux for single product data
 
 class SingleProduct extends Component {
-  componentDidMount() {
-    this.props.loadSingleProduct(this.props.match.params.id)
+  constructor(props) {
+    super(props)
+
+    this.handleAddCart = this.handleAddCart.bind(this)
     this.handleAddToCart = this.handleAddToCart.bind(this)
+  }
+
+  async componentDidMount() {
+    this.props.loadSingleProduct(this.props.match.params.id)
+    await this.props.loadSingleProduct(this.props.match.params.id)
+    this.props.createOrder() //if user logged in, findOrCreate Order/cart
   }
 
   handleAddToCart(id) {
@@ -24,8 +38,29 @@ class SingleProduct extends Component {
     }
   }
 
+  handleAddCart(singleProductId) {
+    let {singleProduct, orderItems} = this.props
+
+    let selectedItem
+    orderItems = orderItems.map(item => {
+      if (item.id === singleProduct.id) {
+        selectedItem = item
+      }
+      return item
+    })
+
+    if (selectedItem) {
+      selectedItem.orderItem.quantity++
+      this.props.editQuantity(selectedItem.orderItem)
+    } else {
+      this.props.createOrderItem(singleProduct)
+    }
+  }
+
   render() {
     const {singleProduct} = this.props
+
+    console.log(this.props)
     return (
       <div id="single-product-container">
         {singleProduct === undefined ? (
@@ -46,8 +81,8 @@ class SingleProduct extends Component {
 
             <button
               disabled={!singleProduct.inventory > 0}
+              onClick={() => this.handleAddCart(singleProduct.id)}
               type="submit"
-              onClick={() => this.handleAddToCart(singleProduct.id)}
             >
               Add To Cart
             </button>
@@ -61,13 +96,18 @@ class SingleProduct extends Component {
 const mapStateToProps = state => {
   return {
     singleProduct: state.products.selected,
+    orderItems: state.order.items,
     userId: state.user.id
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadSingleProduct: id => dispatch(getSingleProduct(id))
+    loadSingleProduct: id => dispatch(getSingleProduct(id)),
+    addToCart: (productId, qty) => dispatch(addToOrder(productId, qty)),
+    createOrder: () => dispatch(createOrder()),
+    createOrderItem: product => dispatch(createOrderItem(product)),
+    editQuantity: itemObj => dispatch(editQuantity(itemObj))
   }
 }
 
