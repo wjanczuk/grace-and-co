@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const {OrderItem, Order, Product, User} = require('../db/models')
 
-//GET /api/cart/:userId
+//GET /api/cart/:userId -- /cart
 router.get('/:userId', async (req, res, next) => {
   try {
     const order = await Order.findOne({
@@ -21,23 +21,24 @@ router.get('/:userId', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     let user
-    if (req.body) {
+    if (Object.keys(req.body).length) {
       user = await User.findOrCreate({
         where: {
           email: req.body.email
         }
       })
-      user = user[0]
+      user = user[0].id
     } else {
-      user = req.session.passport
+      user = req.session.passport.user
     }
 
     let order = await Order.findOrCreate({
       where: {
-        userId: user.id
+        userId: user,
+        status: 'in-progress'
       }
     })
-    if (!req.body) {
+    if (!Object.keys(req.body).length) {
       order = await order[0].getProducts()
     } else {
       order = order[0]
@@ -49,6 +50,21 @@ router.post('/', async (req, res, next) => {
   }
 })
 
+// POST /api/cart/items -- single product view
+router.post('/items', async (req, res, next) => {
+  try {
+    await OrderItem.bulkCreate(req.body.products)
+    const order = await Order.findByPk(req.body.products[0].orderId)
+    await order.update({
+      status: 'completed'
+    })
+    res.send(order)
+  } catch (error) {
+    next(error)
+  }
+})
+
+//POST /api/cart/:productId -- add to cart
 router.post('/:productId', async (req, res, next) => {
   try {
     let order
@@ -56,7 +72,8 @@ router.post('/:productId', async (req, res, next) => {
     let checkUser = req.session.passport
     order = await Order.findOne({
       where: {
-        userId: checkUser.user
+        userId: checkUser.user,
+        status: 'in-progress'
       },
       include: [Product]
     })
@@ -103,19 +120,6 @@ router.put('/', async (req, res, next) => {
     )
     const updatedItem = await OrderItem.findByPk(req.body.id)
     res.send(updatedItem)
-  } catch (error) {
-    next(error)
-  }
-})
-
-// POST /api/cart/items
-router.post('/items', async (req, res, next) => {
-  try {
-    const order = await Order.findByPk(req.body.products[0].orderId)
-    await order.update({
-      status: 'completed'
-    })
-    res.send(order)
   } catch (error) {
     next(error)
   }

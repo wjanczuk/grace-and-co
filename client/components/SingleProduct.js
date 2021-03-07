@@ -21,13 +21,12 @@ class SingleProduct extends Component {
 
   componentDidMount() {
     this.props.loadSingleProduct(this.props.match.params.id)
-    if (this.props.userId) {
-      this.props.createOrder() //if user logged in, findOrCreate Order/cart
-    }
+    // if (this.props.userId) {
+    //   this.props.createOrder() //if user logged in, findOrCreate Order/cart
+    // }
   }
 
   handleAddCart(singleProductId) {
-    console.log('userId-->', this.props.userId)
     if (!this.props.userId) {
       if (!localStorage.getItem('cart')) {
         const emptyCart = {
@@ -37,6 +36,7 @@ class SingleProduct extends Component {
       }
       addToGuestCart(singleProductId)
     } else {
+      this.props.createOrder()
       let {singleProduct, orderItems} = this.props
 
       let selectedItem
