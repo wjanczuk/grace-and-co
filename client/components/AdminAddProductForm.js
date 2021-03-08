@@ -58,12 +58,20 @@ class AdminAddProductForm extends React.Component {
           />
           <br />
           <label>Category:</label>
-          <input
-            type="text"
+          <select
             name="category"
             onChange={this.handleChange}
             value={this.state.category}
-          />
+          >
+            <option value="Beaded">Beaded</option>
+            <option value="Brass">Brass</option>
+            <option value="Lucite + Resin">Lucite + Resin</option>
+            <option value="Wood">Wood</option>
+            <option value="Leather">Leather</option>
+            <option value="Huggies + Ear Cuffs">Huggies + Ear Cuffs</option>
+            <option value="Stud">Stud</option>
+            <option value="Statement">Statement</option>
+          </select>
           <br />
           <label>Inventory:</label>
           <input
@@ -89,7 +97,7 @@ class AdminAddProductForm extends React.Component {
             value={this.state.description}
           />
           <br />
-          <input type="submit" />
+          <input type="submit" onClick={this.props.handleClick} />
           <br />
         </form>
       </div>

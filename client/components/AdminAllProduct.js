@@ -5,8 +5,23 @@ import AdminProductUpdateForm from './AdminProductUpdateForm'
 import AdminAddProductForm from './AdminAddProductForm'
 
 class AdminAllProduct extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      update: false
+    }
+    this.handleClick = this.handleClick.bind(this)
+  }
+
   componentDidMount() {
     this.props.getProductsAdmin()
+  }
+
+  handleClick(event) {
+    if (event) event.preventDefault()
+    this.setState({
+      update: !this.state.update
+    })
   }
 
   render() {
@@ -55,8 +70,19 @@ class AdminAllProduct extends React.Component {
                 Delete
               </button>
             </span>
+            <span>
+              <button type="button" onClick={this.handleClick}>
+                Update
+              </button>
+            </span>
+            {this.state.update && (
+              <AdminProductUpdateForm
+                product={product}
+                productId={product.id}
+                hideUpdateForm={this.handleClick}
+              />
+            )}
 
-            <AdminProductUpdateForm product={product} productId={product.id} />
             <hr />
           </div>
         ))}
