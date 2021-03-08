@@ -41,9 +41,7 @@ const completedOrder = order => ({
 export const getOrder = userId => {
   return async dispatch => {
     try {
-      console.log('reached thunk..')
       const {data: order} = await axios.get(`/api/cart/${userId}`)
-      console.log('roreder returned from server-->', order)
       dispatch(gotOrder(order))
     } catch (error) {
       console.log('error loading order from server')
@@ -97,7 +95,6 @@ export const createOrderItem = product => {
 
 export const completeOrder = userId => {
   return async dispatch => {
-    console.log('userId in thunk..-->', userId)
     try {
       const {data: order} = await axios.put(`/api/cart/${userId}`)
 

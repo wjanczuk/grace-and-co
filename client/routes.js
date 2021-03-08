@@ -13,8 +13,6 @@ import {
   OrderProcessed
 } from './components'
 import {me} from './store'
-import {getCart, createCart} from './store/cart'
-// import AllProduct from './components/AllProduct'
 
 /**
  * COMPONENT
@@ -73,12 +71,6 @@ const mapDispatch = dispatch => {
   return {
     loadInitialData() {
       dispatch(me())
-    },
-    loadCart(userId) {
-      dispatch(getCart(userId))
-    },
-    createNewCart() {
-      dispatch(createCart())
     }
   }
 }

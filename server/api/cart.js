@@ -4,7 +4,6 @@ const {OrderItem, Order, Product, User} = require('../db/models')
 //GET /api/cart/:userId -- /cart
 router.get('/:userId', async (req, res, next) => {
   try {
-    console.log('USERID-->', req.params.userId)
     const order = await Order.findOrCreate({
       where: {
         userId: req.params.userId,
@@ -132,14 +131,12 @@ router.put('/', async (req, res, next) => {
 //PUT /api/cart/:userId
 router.put('/:userId', async (req, res, next) => {
   try {
-    console.log('req.params.id-->', req.params.userId)
     const order = await Order.findOne({
       where: {
         userId: req.params.userId,
         status: 'in-progress'
       }
     })
-    console.log('order-->', order)
 
     await order.update(
       {
@@ -153,7 +150,6 @@ router.put('/:userId', async (req, res, next) => {
       }
     )
     const updatedOrder = await Order.findByPk(order.id)
-    console.log('completed order returned from server-->', updatedOrder)
     res.send(updatedOrder)
   } catch (error) {
     next(error)
