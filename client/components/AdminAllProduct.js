@@ -56,7 +56,7 @@ class AdminAllProduct extends React.Component {
               </button>
             </span>
 
-            <AdminProductUpdateForm productId={product.id} />
+            <AdminProductUpdateForm product={product} productId={product.id} />
             <hr />
           </div>
         ))}
@@ -74,7 +74,7 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     getProductsAdmin: () => dispatch(getProductsAdmin()),
-    deleteProduct: () => dispatch(deleteProduct())
+    deleteProduct: productId => dispatch(deleteProduct(productId))
   }
 }
 

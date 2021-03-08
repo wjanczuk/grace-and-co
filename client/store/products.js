@@ -74,7 +74,7 @@ export const getSingleProduct = productId => {
 export const addProduct = newProduct => {
   return async dispatch => {
     try {
-      const {data: product} = await axios.post('/api/prodcuts', newProduct)
+      const {data: product} = await axios.post('/api/products', newProduct)
       dispatch(addedProduct(product))
     } catch (error) {
       console.log('Error in adding a product')
@@ -137,8 +137,14 @@ export default function(state = initialState, action) {
         ...state,
         all: state.all.filter(product => product.id !== action.productId)
       }
-    case UPDATED_PRODUCT:
-      return {...state, selected: action.updated}
+    case UPDATED_PRODUCT: {
+      const productIdx = state.all.findIndex(
+        product => product.id === action.updated.id
+      )
+      const allCopy = [...state.all]
+      allCopy.splice(productIdx, 1, action.updated)
+      return {...state, all: allCopy, selected: action.updated}
+    }
     default:
       return state
   }

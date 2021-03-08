@@ -3,16 +3,9 @@ import {connect} from 'react-redux'
 import {updateProduct} from '../store/products'
 
 class AdminProductUpdateForm extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      name: '',
-      price: '',
-      category: '',
-      inventory: '',
-      imageUrl: '',
-      description: ''
-    }
+  constructor(props) {
+    super(props)
+    this.state = props.product
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
@@ -26,14 +19,6 @@ class AdminProductUpdateForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault()
     this.props.updateProduct(this.props.productId, this.state)
-    this.setState({
-      name: '',
-      price: '',
-      category: '',
-      inventory: '',
-      imageUrl: '',
-      description: ''
-    })
   }
 
   render() {

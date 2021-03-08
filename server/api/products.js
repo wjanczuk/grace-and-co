@@ -42,10 +42,10 @@ router.delete('/:productId', adminAuth, async (req, res, next) => {
   try {
     await Product.destroy({
       where: {
-        productId: req.params.productId
+        id: req.params.productId
       }
     })
-    res.status(204).end()
+    res.sendStatus(204)
   } catch (error) {
     next(error)
   }
