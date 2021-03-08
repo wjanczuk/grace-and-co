@@ -6,6 +6,7 @@ const REMOVE_ORDER_ITEM = 'REMOVE_ORDER_ITEM'
 const EDIT_QUANTITY = 'EDIT_QUANTITY'
 const CREATE_ORDER = 'CREATE_ORDER'
 const CREATE_ORDERITEM = 'CREATED_ORDERITEM'
+const COMPLETE_ORDER = 'COMPLETE_ORDER'
 
 // ACTION CREATORS
 const gotOrder = order => ({
@@ -31,11 +32,18 @@ const createdOrderItem = order => ({
   order
 })
 
+const completedOrder = order => ({
+  type: COMPLETE_ORDER,
+  order
+})
+
 // THUNK CREATORS
 export const getOrder = userId => {
   return async dispatch => {
     try {
+      console.log('reached thunk..')
       const {data: order} = await axios.get(`/api/cart/${userId}`)
+      console.log('roreder returned from server-->', order)
       dispatch(gotOrder(order))
     } catch (error) {
       console.log('error loading order from server')
@@ -87,6 +95,19 @@ export const createOrderItem = product => {
   }
 }
 
+export const completeOrder = userId => {
+  return async dispatch => {
+    console.log('userId in thunk..-->', userId)
+    try {
+      const {data: order} = await axios.put(`/api/cart/${userId}`)
+
+      dispatch(completedOrder(order))
+    } catch (error) {
+      console.log('error completing cart from server')
+    }
+  }
+}
+
 const initialState = {
   items: []
 }
@@ -122,6 +143,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         items: action.order
+      }
+    case COMPLETE_ORDER:
+      return {
+        ...state,
+        items: []
       }
     default:
       return state

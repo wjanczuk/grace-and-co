@@ -1,11 +1,12 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {editQuantity, getOrder, removeItem} from '../store/order'
+import {editQuantity, getOrder, removeItem, completeOrder} from '../store/order'
 import {
   editGuestQuantity,
   removeGuestItem,
   guestCheckout
 } from '../store/guestCart'
+import {Redirect} from 'react-router-dom'
 
 class Cart extends React.Component {
   constructor() {
@@ -13,6 +14,7 @@ class Cart extends React.Component {
     this.state = {
       cart: [],
       displayCheckout: false,
+      displayOrderSuccess: false,
       email: ''
     }
     this.handleClickMinus = this.handleClickMinus.bind(this)
@@ -74,13 +76,16 @@ class Cart extends React.Component {
 
   handleCheckout(evt) {
     evt.preventDefault()
+
     const orderObj = {
       products: this.state.cart,
       email: this.state.email
     }
+
     guestCheckout(orderObj)
     this.setState({
-      cart: []
+      cart: [],
+      displayOrderSuccess: true
     })
   }
 
@@ -91,14 +96,24 @@ class Cart extends React.Component {
   }
 
   startCheckout() {
+    if (this.props.userId) {
+      this.props.completeOrder(this.props.userId)
+      this.setState({
+        displayOrderSuccess: true
+      })
+    }
+
     this.setState({
       displayCheckout: true
     })
   }
   render() {
+    const {displayOrderSuccess} = this.state
     const cart = this.props.user.id ? this.props.orderItems : this.state.cart
 
-    return (
+    return displayOrderSuccess ? (
+      <Redirect to="/complete" />
+    ) : (
       <div>
         {// (!this.props.userId && !this.state.cart.length) ? ( // cannot get this to work and also say cart is empty after loading ):
         //     <h1>Cart Loading...</h1>
@@ -173,7 +188,8 @@ const mapState = state => {
 const mapDispatch = dispatch => ({
   removeItem: itemId => dispatch(removeItem(itemId)),
   getOrder: userId => dispatch(getOrder(userId)),
-  editQuantity: quantity => dispatch(editQuantity(quantity))
+  editQuantity: quantity => dispatch(editQuantity(quantity)),
+  completeOrder: userId => dispatch(completeOrder(userId))
 })
 
 export default connect(mapState, mapDispatch)(Cart)

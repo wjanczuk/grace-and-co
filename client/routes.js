@@ -9,7 +9,8 @@ import {
   SingleProduct,
   LandingPage,
   AllProduct,
-  Cart
+  Cart,
+  OrderProcessed
 } from './components'
 import {me} from './store'
 import {getCart, createCart} from './store/cart'
@@ -25,24 +26,28 @@ class Routes extends Component {
   }
 
   render() {
-    const {isLoggedIn} = this.props
+    const {isLoggedIn, user} = this.props
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
-        <Route exact path="/" component={LandingPage} />
+        <Route
+          exact
+          path="/"
+          render={() => <LandingPage isLoggedIn={isLoggedIn} />}
+        />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/products/:id" component={SingleProduct} />
         <Route exact path="/products" component={AllProduct} />
-        <Route
-          exact
-          path="/cart"
-          component={() => <Cart user={this.props.user} />}
-        />
+        <Route exact path="/complete" component={OrderProcessed} />
+        <Route exact path="/cart" component={() => <Cart user={user} />} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
-            <Route path="/home" component={UserHome} />
+            <Route
+              path="/home"
+              render={() => <LandingPage isLoggedIn={isLoggedIn} />}
+            />
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}

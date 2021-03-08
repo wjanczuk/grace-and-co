@@ -40,6 +40,7 @@ class SingleProduct extends Component {
       let {singleProduct, orderItems} = this.props
 
       let selectedItem
+
       orderItems = orderItems.map(item => {
         if (item.id === singleProduct.id) {
           selectedItem = item

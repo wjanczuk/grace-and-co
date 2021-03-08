@@ -4,13 +4,15 @@ const {OrderItem, Order, Product, User} = require('../db/models')
 //GET /api/cart/:userId -- /cart
 router.get('/:userId', async (req, res, next) => {
   try {
-    const order = await Order.findOne({
+    console.log('USERID-->', req.params.userId)
+    const order = await Order.findOrCreate({
       where: {
         userId: req.params.userId,
         status: 'in-progress'
       }
     })
-    const orderItems = await order.getProducts()
+
+    const orderItems = await order[0].getProducts()
     res.json(orderItems)
   } catch (error) {
     next(error)
@@ -70,21 +72,23 @@ router.post('/:productId', async (req, res, next) => {
     let order
     let orderItem
     let checkUser = req.session.passport
-    order = await Order.findOne({
+    order = await Order.findOrCreate({
       where: {
         userId: checkUser.user,
         status: 'in-progress'
       },
       include: [Product]
     })
+
+    console.log('order-->', order)
     orderItem = await OrderItem.findOrCreate({
       where: {
         productId: req.params.productId,
-        orderId: order.id,
+        orderId: order[0].id,
         price: req.body.product.price
       }
     })
-    order = await order.getProducts()
+    order = await order[0].getProducts()
     res.json(order)
   } catch (error) {
     next(error)
@@ -120,6 +124,37 @@ router.put('/', async (req, res, next) => {
     )
     const updatedItem = await OrderItem.findByPk(req.body.id)
     res.send(updatedItem)
+  } catch (error) {
+    next(error)
+  }
+})
+
+//PUT /api/cart/:userId
+router.put('/:userId', async (req, res, next) => {
+  try {
+    console.log('req.params.id-->', req.params.userId)
+    const order = await Order.findOne({
+      where: {
+        userId: req.params.userId,
+        status: 'in-progress'
+      }
+    })
+    console.log('order-->', order)
+
+    await order.update(
+      {
+        status: 'completed'
+      },
+      {
+        where: {
+          id: order.id,
+          userId: req.params.userId
+        }
+      }
+    )
+    const updatedOrder = await Order.findByPk(order.id)
+    console.log('completed order returned from server-->', updatedOrder)
+    res.send(updatedOrder)
   } catch (error) {
     next(error)
   }
