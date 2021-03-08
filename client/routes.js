@@ -9,6 +9,8 @@ import {
   SingleProduct,
   LandingPage,
   AllProduct,
+  Cart,
+  OrderProcessed,
   AdminAllUser,
   AdminAllProduct
 } from './components'
@@ -19,31 +21,44 @@ import {me} from './store'
  */
 class Routes extends Component {
   componentDidMount() {
-    this.props.loadInitialData()
+    const {loadInitialData} = this.props
+    loadInitialData()
   }
 
   render() {
-    const {isLoggedIn, isAdmin} = this.props
-
+    const {isLoggedIn, user, isAdmin} = this.props
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
-        <Route exact path="/" component={LandingPage} />
+        <Route
+          exact
+          path="/"
+          render={() => <LandingPage isLoggedIn={isLoggedIn} />}
+        />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route exact path="/products/:id" component={SingleProduct} />
         <Route exact path="/products" component={AllProduct} />
+        <Route exact path="/complete" component={OrderProcessed} />
+        <Route exact path="/cart" component={() => <Cart user={user} />} />
 
         {isAdmin ? (
           <Switch>
             {/* Routes placed here are only available to admins */}
-            <Route exact path="/home" component={UserHome} />
+            <Route
+              exact
+              path="/"
+              render={() => <LandingPage isLoggedIn={isLoggedIn} />}
+            />
             <Route exact path="/admin/products" component={AdminAllProduct} />
             <Route exact path="/admin/users" component={AdminAllUser} />
           </Switch>
         ) : isLoggedIn ? (
           <Switch>
-            <Route path="/home" component={UserHome} />
+            <Route
+              path="/"
+              render={() => <LandingPage isLoggedIn={isLoggedIn} />}
+            />
           </Switch>
         ) : (
           ''
@@ -64,6 +79,7 @@ const mapState = state => {
     // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
     isLoggedIn: !!state.user.id,
+    user: state.user,
     isAdmin: !!state.user.isAdmin
   }
 }
