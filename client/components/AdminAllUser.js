@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {fetchUsers} from '../store/users'
 
-export class AuthUsers extends React.Component {
+export class AdminAllUser extends React.Component {
   constructor() {
     super()
     this.state = {}
@@ -72,4 +72,4 @@ const mapDispatch = dispatch => ({
   getUsers: () => dispatch(fetchUsers())
 })
 
-export default connect(mapState, mapDispatch)(AuthUsers)
+export default connect(mapState, mapDispatch)(AdminAllUser)
