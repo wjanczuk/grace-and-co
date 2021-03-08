@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {getSingleProduct} from '../store/products'
 import {addToGuestCart} from '../store/guestCart'
 import {
-  addToOrder,
+  // addToOrder,
   createOrder,
   createOrderItem,
   editQuantity
@@ -60,7 +60,6 @@ class SingleProduct extends Component {
   render() {
     const {singleProduct} = this.props
 
-    console.log(this.props)
     return (
       <div id="single-product-container">
         {singleProduct === undefined ? (
@@ -104,7 +103,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     loadSingleProduct: id => dispatch(getSingleProduct(id)),
-    addToCart: (productId, qty) => dispatch(addToOrder(productId, qty)),
+    // addToCart: (productId, qty) => dispatch(addToOrder(productId, qty)),
     createOrder: () => dispatch(createOrder()),
     createOrderItem: product => dispatch(createOrderItem(product)),
     editQuantity: itemObj => dispatch(editQuantity(itemObj))

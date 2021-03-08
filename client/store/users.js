@@ -13,7 +13,7 @@ const getUsers = users => ({
 export const fetchUsers = () => {
   return async dispatch => {
     try {
-      const {data: users} = await axios.get('/api/usersAdmin')
+      const {data: users} = await axios.get('/api/admin/users')
       dispatch(getUsers(users))
     } catch (error) {
       console.log('Error fetching users from the server!')
