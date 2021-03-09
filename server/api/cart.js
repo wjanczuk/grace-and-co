@@ -83,7 +83,8 @@ router.post('/:productId', async (req, res, next) => {
       where: {
         productId: req.params.productId,
         orderId: order[0].id,
-        price: req.body.product.price
+        price: req.body.product.price,
+        quantity: req.body.qty
       }
     })
     order = await order[0].getProducts()

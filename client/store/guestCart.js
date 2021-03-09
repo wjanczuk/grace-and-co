@@ -1,13 +1,13 @@
 import axios from 'axios'
 
-export const addToGuestCart = async productId => {
+export const addToGuestCart = async (productId, qty) => {
   try {
     const {data: product} = await axios.get(`/api/products/${productId}`) // grab product
     const productObj = {
       // create productObj to store product and orderItem info
       ...product,
       orderItem: {
-        quantity: 1,
+        quantity: qty,
         id: product.id
       }
     }
@@ -15,7 +15,7 @@ export const addToGuestCart = async productId => {
     let inCart = false
     cart.items = cart.items.map(item => {
       if (item.id === productObj.id) {
-        item.orderItem.quantity++
+        item.orderItem.quantity += qty
         inCart = true
       }
       return item
