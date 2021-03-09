@@ -79,7 +79,6 @@ router.post('/:productId', async (req, res, next) => {
       include: [Product]
     })
 
-    console.log('order-->', order)
     orderItem = await OrderItem.findOrCreate({
       where: {
         productId: req.params.productId,
@@ -102,6 +101,21 @@ router.delete('/', async (req, res, next) => {
         id: req.body.itemId
       }
     })
+    res.sendStatus(200)
+  } catch (error) {
+    next(error)
+  }
+})
+
+//DELETE /api/cart/removecart
+router.delete('/removecart', async (req, res, next) => {
+  try {
+    const carts = await req.user.getOrders({
+      where: {
+        status: 'in-progress'
+      }
+    })
+    await carts[0].destroy()
     res.sendStatus(200)
   } catch (error) {
     next(error)

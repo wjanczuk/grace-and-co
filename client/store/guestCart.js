@@ -66,3 +66,7 @@ export const guestCheckout = async orderObj => {
     console.log(error)
   }
 }
+
+export const removeGuestCart = () => {
+  localStorage.removeItem('cart')
+}
