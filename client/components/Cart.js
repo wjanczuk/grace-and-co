@@ -173,7 +173,7 @@ class Cart extends React.Component {
             </div>
           ))}
 
-        {cart.items.length ? (
+        {/* {cart.items.length ? (
           <div>
             Total: ${cart.subtotal}
             <button type="submit" onClick={() => this.startCheckout()}>
@@ -182,9 +182,9 @@ class Cart extends React.Component {
           </div>
         ) : (
           <h1>Your Cart Is Empty</h1>
-        )}
+        )} */}
 
-        {cart.length && (
+        {cart.items.length ? (
           <div>
             {/* ADDED DELETE CART BUTTON */}
             <button type="submit" onClick={() => this.deleteCart()}>
@@ -194,6 +194,8 @@ class Cart extends React.Component {
               Checkout
             </button>
           </div>
+        ) : (
+          <h1>Your Cart Is Empty</h1>
         )}
 
         {this.state.displayCheckout &&
