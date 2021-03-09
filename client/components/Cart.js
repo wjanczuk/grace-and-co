@@ -153,9 +153,15 @@ class Cart extends React.Component {
 
         {!cart.length && <h1>Your Cart Is Empty</h1>}
         {cart.length && (
-          <button type="submit" onClick={() => this.startCheckout()}>
-            Checkout
-          </button>
+          <div>
+            {/* ADDED DELETE CART BUTTON */}
+            <button type="submit" onClick={() => this.deleteCart()}>
+              Delete Cart
+            </button>
+            <button type="submit" onClick={() => this.startCheckout()}>
+              Checkout
+            </button>
+          </div>
         )}
 
         {this.state.displayCheckout &&

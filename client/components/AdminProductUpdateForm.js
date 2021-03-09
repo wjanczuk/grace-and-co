@@ -18,6 +18,7 @@ class AdminProductUpdateForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault()
+    this.props.hideUpdateForm()
     this.props.updateProduct(this.props.productId, this.state)
   }
 
@@ -43,12 +44,26 @@ class AdminProductUpdateForm extends React.Component {
           />
           <br />
           <label>Category:</label>
-          <input
+          <select
+            name="category"
+            onChange={this.handleChange}
+            value={this.state.category}
+          >
+            <option value="Beaded">Beaded</option>
+            <option value="Brass">Brass</option>
+            <option value="Lucite + Resin">Lucite + Resin</option>
+            <option value="Wood">Wood</option>
+            <option value="Leather">Leather</option>
+            <option value="Huggies + Ear Cuffs">Huggies + Ear Cuffs</option>
+            <option value="Stud">Stud</option>
+            <option value="Statement">Statement</option>
+          </select>
+          {/* <input
             type="text"
             name="category"
             onChange={this.handleChange}
             value={this.state.category}
-          />
+          /> */}
           <br />
           <label>Inventory:</label>
           <input
@@ -74,7 +89,7 @@ class AdminProductUpdateForm extends React.Component {
             value={this.state.description}
           />
           <br />
-          <input type="submit" />
+          <button type="submit">Finish Edit</button>
           <br />
         </form>
       </div>
