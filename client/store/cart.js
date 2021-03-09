@@ -3,6 +3,7 @@ import axios from 'axios'
 //ACTION TYPES
 const GOT_CART = 'GET_CART'
 const CREATED_CART = 'CREATED_CART'
+const DELETED_CART = 'DELETED_CART'
 
 //ACTION CREATORS
 const gotCart = cart => {
@@ -16,6 +17,12 @@ const createdCart = newCart => {
   return {
     type: CREATED_CART,
     newCart
+  }
+}
+
+const deletedCart = () => {
+  return {
+    type: DELETED_CART
   }
 }
 
@@ -42,6 +49,17 @@ export const createNewCart = () => {
   }
 }
 
+export const deleteCart = () => {
+  return async dispatch => {
+    try {
+      await axios.delete('/api/cart/removecart')
+      dispatch(deletedCart())
+    } catch (error) {
+      console.log('error in deleting cart')
+    }
+  }
+}
+
 //REDUCER
 
 const initialState = {
@@ -54,6 +72,8 @@ export default function cartReducer(state = initialState, action) {
       return action.cart
     case CREATED_CART:
       return action.newCart
+    case DELETED_CART:
+      return initialState
     default:
       return state
   }

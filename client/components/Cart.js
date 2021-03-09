@@ -1,9 +1,16 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {editQuantity, getOrder, removeItem, completeOrder} from '../store/order'
+import {
+  editQuantity,
+  getOrder,
+  removeItem,
+  completeOrder,
+  deleteCart
+} from '../store/order'
 import {
   editGuestQuantity,
   removeGuestItem,
+  removeGuestCart,
   guestCheckout
 } from '../store/guestCart'
 import {Redirect} from 'react-router-dom'
@@ -153,15 +160,25 @@ class Cart extends React.Component {
 
         {!cart.length && <h1>Your Cart Is Empty</h1>}
         {cart.length && (
-          <div>
-            {/* ADDED DELETE CART BUTTON */}
-            <button type="submit" onClick={() => this.deleteCart()}>
-              Delete Cart
+          <>
+            <button
+              type="button"
+              onClick={() => {
+                if (this.props.userId) this.props.deleteCart()
+                else {
+                  removeGuestCart()
+                  this.setState({
+                    cart: []
+                  })
+                }
+              }}
+            >
+              Clear Cart
             </button>
             <button type="submit" onClick={() => this.startCheckout()}>
               Checkout
             </button>
-          </div>
+          </>
         )}
 
         {this.state.displayCheckout &&
@@ -176,6 +193,7 @@ class Cart extends React.Component {
                 value={this.state.email}
                 onChange={this.handleChange}
               />
+
               <button type="submit">Continue</button>
             </form>
           )}
@@ -195,7 +213,8 @@ const mapDispatch = dispatch => ({
   removeItem: itemId => dispatch(removeItem(itemId)),
   getOrder: userId => dispatch(getOrder(userId)),
   editQuantity: quantity => dispatch(editQuantity(quantity)),
-  completeOrder: userId => dispatch(completeOrder(userId))
+  completeOrder: userId => dispatch(completeOrder(userId)),
+  deleteCart: () => dispatch(deleteCart())
 })
 
 export default connect(mapState, mapDispatch)(Cart)

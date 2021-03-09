@@ -7,6 +7,7 @@ const EDIT_QUANTITY = 'EDIT_QUANTITY'
 const CREATE_ORDER = 'CREATE_ORDER'
 const CREATE_ORDERITEM = 'CREATED_ORDERITEM'
 const COMPLETE_ORDER = 'COMPLETE_ORDER'
+const DELETED_CART = 'DELETED_CART'
 
 // ACTION CREATORS
 const gotOrder = order => ({
@@ -35,6 +36,10 @@ const createdOrderItem = order => ({
 const completedOrder = order => ({
   type: COMPLETE_ORDER,
   order
+})
+
+const deletedCart = () => ({
+  type: DELETED_CART
 })
 
 // THUNK CREATORS
@@ -105,6 +110,17 @@ export const completeOrder = userId => {
   }
 }
 
+export const deleteCart = () => {
+  return async dispatch => {
+    try {
+      await axios.delete('/api/cart/removecart')
+      dispatch(deletedCart())
+    } catch (error) {
+      console.log('error in deleting cart')
+    }
+  }
+}
+
 const initialState = {
   items: []
 }
@@ -146,6 +162,8 @@ export default function(state = initialState, action) {
         ...state,
         items: []
       }
+    case DELETED_CART:
+      return initialState
     default:
       return state
   }
