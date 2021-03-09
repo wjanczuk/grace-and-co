@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {OrderItem, Order, Product, User} = require('../db/models')
+const {OrderItem, Order, User} = require('../db/models')
 
 //GET /api/cart/:userId --> logged in user clicks on cart
 router.get('/:userId', async (req, res, next) => {
@@ -59,7 +59,9 @@ router.post('/', async (req, res, next) => {
       // if it's a logged in user, will grab order products
       order = await order[0].getProducts()
     } else {
-      order = order[0] // if guest will return order (has no order items at this point)
+      order = order[0]
+      await order.updateOrderSubtotal(req.body.subtotal)
+      // if guest will return order (has no order items at this point)
     }
 
     res.json(order)
@@ -99,11 +101,13 @@ router.post('/:productId', async (req, res, next) => {
         status: 'in-progress'
       }
     })
+
     await OrderItem.findOrCreate({
       where: {
         productId: req.params.productId,
         orderId: order.id,
-        price: req.body.product.price
+        price: req.body.product.price,
+        quantity: req.body.qty
       }
     })
     let orderItems = await order.getProducts()

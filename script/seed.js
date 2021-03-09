@@ -16,7 +16,7 @@ const seed = async () => {
         category: 'Beaded',
         imageUrl: '/img/Beaded_1.jpg',
         price: 30.0,
-        inventory: 25
+        inventory: 0
       },
       {
         name: 'Peacock Rust Citron Fringe Earring',

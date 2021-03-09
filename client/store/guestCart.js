@@ -21,14 +21,17 @@ export const addToGuestCart = async (productId, qty) => {
         item.orderItem.quantity += qty
         inCart = true
         cart.subtotal += item.orderItem.price * qty
+        console.log('INSIDE REPEAT', typeof qty)
+        console.log(cart.subtotal)
       }
       return item
     })
     if (!inCart) {
       cart.items.push(productObj) // add to items array
       cart.subtotal += cart.items[cart.items.length - 1].orderItem.price * qty // grabs last index for orderItem price
+      console.log('INSIDE NEW ITEM', typeof qty)
+      console.log(cart.subtotal)
     }
-
     localStorage.setItem('cart', JSON.stringify(cart)) // reset guest cart with added product
   } catch (error) {
     console.log(error)

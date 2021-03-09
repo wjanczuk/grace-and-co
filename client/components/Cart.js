@@ -31,6 +31,7 @@ class Cart extends React.Component {
     if (this.props.user.id) {
       // if user exists, grab cart from store
       await this.props.getOrder(this.props.user.id)
+      console.log('in componentDidMount')
     } else if (localStorage.getItem('cart')) {
       // if cart exists in localstorage grab cart and set to local state
       const localCart = JSON.parse(localStorage.getItem('cart'))
@@ -82,7 +83,8 @@ class Cart extends React.Component {
 
     const orderObj = {
       products: this.state.cart.items,
-      email: this.state.email
+      email: this.state.email,
+      subtotal: this.state.cart.subtotal
     }
 
     guestCheckout(orderObj)
@@ -114,6 +116,7 @@ class Cart extends React.Component {
     })
   }
   render() {
+    console.log('order subtotal-->', this.props.order.subtotal)
     const {displayOrderSuccess} = this.state
     const cart = this.props.user.id ? this.props.order : this.state.cart
     return displayOrderSuccess ? (
@@ -133,8 +136,9 @@ class Cart extends React.Component {
               />
               <h1>{item.name}</h1>
               <span>QTY: {item.orderItem.quantity}</span>
+              <span>Item Price: ${item.orderItem.price}</span>
               <span>
-                Total: ${item.orderItem.price * item.orderItem.quantity}
+                Item Total: ${item.orderItem.price * item.orderItem.quantity}
               </span>
               <button
                 onClick={() =>
@@ -171,7 +175,7 @@ class Cart extends React.Component {
 
         {cart.items.length ? (
           <div>
-            Subtotal: ${cart.subtotal}
+            Total: ${cart.subtotal}
             <button type="submit" onClick={() => this.startCheckout()}>
               Checkout
             </button>

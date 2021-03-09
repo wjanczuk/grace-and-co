@@ -90,11 +90,13 @@ export const createOrGetOrder = () => {
   }
 }
 
-export const createOrderItem = product => {
+export const createOrderItem = (product, qty) => {
+  //takes in qty and product
   return async dispatch => {
     try {
       const {data: orderObj} = await axios.post(`/api/cart/${product.id}`, {
-        product
+        product,
+        qty
       })
       dispatch(createdOrderItem(orderObj))
     } catch (error) {
