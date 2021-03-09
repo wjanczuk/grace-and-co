@@ -116,7 +116,6 @@ class Cart extends React.Component {
   render() {
     const {displayOrderSuccess} = this.state
     const cart = this.props.user.id ? this.props.order : this.state.cart
-    console.log(cart)
     return displayOrderSuccess ? (
       <Redirect to="/complete" />
     ) : (
@@ -142,7 +141,7 @@ class Cart extends React.Component {
                   this.handleClickPlus(
                     item.orderItem.id,
                     item.orderItem.quantity,
-                    cart.items.orderId
+                    item.orderItem.orderId
                   )
                 }
                 type="submit"
@@ -154,7 +153,7 @@ class Cart extends React.Component {
                   this.handleClickMinus(
                     item.orderItem.id,
                     item.orderItem.quantity,
-                    cart.items.orderId
+                    item.orderItem.orderId
                   )
                 }
                 type="submit"
@@ -179,6 +178,18 @@ class Cart extends React.Component {
           </div>
         ) : (
           <h1>Your Cart Is Empty</h1>
+        )}
+
+        {cart.length && (
+          <div>
+            {/* ADDED DELETE CART BUTTON */}
+            <button type="submit" onClick={() => this.deleteCart()}>
+              Delete Cart
+            </button>
+            <button type="submit" onClick={() => this.startCheckout()}>
+              Checkout
+            </button>
+          </div>
         )}
 
         {this.state.displayCheckout &&

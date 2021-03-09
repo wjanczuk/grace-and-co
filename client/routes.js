@@ -28,45 +28,59 @@ class Routes extends Component {
   render() {
     const {isLoggedIn, user, isAdmin} = this.props
     return (
-      <Switch>
-        {/* Routes placed here are available to all visitors */}
-        <Route
-          exact
-          path="/"
-          render={() => <LandingPage isLoggedIn={isLoggedIn} />}
-        />
-        <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
-        <Route exact path="/products/:id" component={SingleProduct} />
-        <Route exact path="/products" component={AllProduct} />
-        <Route exact path="/complete" component={OrderProcessed} />
-        <Route exact path="/cart" component={() => <Cart user={user} />} />
+      <div id="wrapper">
+        <div id="main">
+          <div className="inner">
+            <Switch>
+              {/* Routes placed here are available to all visitors */}
+              <Route
+                exact
+                path="/"
+                render={() => <LandingPage isLoggedIn={isLoggedIn} />}
+              />
+              <Route path="/login" component={Login} />
+              <Route path="/signup" component={Signup} />
+              <Route exact path="/products/:id" component={SingleProduct} />
+              <Route exact path="/products" component={AllProduct} />
+              <Route exact path="/complete" component={OrderProcessed} />
+              <Route
+                exact
+                path="/cart"
+                component={() => <Cart user={user} />}
+              />
 
-        {isAdmin ? (
-          <Switch>
-            {/* Routes placed here are only available to admins */}
-            <Route
-              exact
-              path="/"
-              render={() => <LandingPage isLoggedIn={isLoggedIn} />}
-            />
-            <Route exact path="/admin/products" component={AdminAllProduct} />
-            <Route exact path="/admin/users" component={AdminAllUser} />
-          </Switch>
-        ) : isLoggedIn ? (
-          <Switch>
-            <Route
-              path="/"
-              render={() => <LandingPage isLoggedIn={isLoggedIn} />}
-            />
-          </Switch>
-        ) : (
-          ''
-        )}
+              {isAdmin ? (
+                <Switch>
+                  {/* Routes placed here are only available to admins */}
+                  <Route
+                    exact
+                    path="/"
+                    render={() => <LandingPage isLoggedIn={isLoggedIn} />}
+                  />
+                  <Route
+                    exact
+                    path="/admin/products"
+                    component={AdminAllProduct}
+                  />
+                  <Route exact path="/admin/users" component={AdminAllUser} />
+                </Switch>
+              ) : isLoggedIn ? (
+                <Switch>
+                  <Route
+                    path="/"
+                    render={() => <LandingPage isLoggedIn={isLoggedIn} />}
+                  />
+                </Switch>
+              ) : (
+                ''
+              )}
 
-        {/* Displays our Login component as a fallback */}
-        <Route component={Login} />
-      </Switch>
+              {/* Displays our Login component as a fallback */}
+              <Route component={Login} />
+            </Switch>
+          </div>
+        </div>
+      </div>
     )
   }
 }

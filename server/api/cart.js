@@ -91,31 +91,26 @@ router.post('/items/:orderId', async (req, res, next) => {
 router.post('/:productId', async (req, res, next) => {
   // creates an order item with product obj as req.body
   try {
-    let order
-    let orderItem
     let checkUser = req.session.passport
-    order = await Order.findOrCreate({
-      // shouldn't an order be made already from the previos route?
+    let order = await Order.findOne({
+      // shouldn't an order be made already from the previous route?
       where: {
         userId: checkUser.user,
         status: 'in-progress'
       }
     })
-
-    orderItem = await OrderItem.findOrCreate({
-      // does this need find? aren't we checking in component if orderItem already exists and if so it's going to the edit quantity route instead?
+    await OrderItem.findOrCreate({
       where: {
         productId: req.params.productId,
-        orderId: order[0].id,
+        orderId: order.id,
         price: req.body.product.price
       }
     })
-    let subtotal = orderItem.price * orderItem.quantity
-    order[0].updateOrderSubtotal(subtotal)
-    let orderItems = await order[0].getProducts()
+    let orderItems = await order.getProducts()
     res.status(201).json({
       subtotal: order.orderSubtotal,
-      order: orderItems
+      order: orderItems,
+      total: order.orderTotal
     })
   } catch (error) {
     next(error)
@@ -127,9 +122,8 @@ router.delete('/item/:itemId', async (req, res, next) => {
   try {
     const orderItem = await OrderItem.findByPk(req.params.itemId)
     const order = await Order.findByPk(orderItem.orderId)
-    let subtotal = order.orderSubtotal
-    subtotal -= orderItem.price * orderItem.quantity
-    order.updateOrderSubtotal(subtotal)
+    let subtotal = order.orderSubtotal - orderItem.price * orderItem.quantity
+    await order.updateOrderSubtotal(subtotal)
     await orderItem.destroy()
     res.status(200).send(order)
   } catch (error) {
@@ -141,28 +135,31 @@ router.delete('/item/:itemId', async (req, res, next) => {
 router.put('/item/:itemId', async (req, res, next) => {
   // update quantity for orderItem with quantity in req.body
   try {
-    await OrderItem.update(
-      {
-        quantity: req.body.quantity
-      },
-      {
-        where: {
-          id: req.params.itemId
-        }
-      }
-    )
-    const updatedItem = await OrderItem.findByPk(req.params.itemId)
+    const orderItem = await OrderItem.findByPk(req.params.itemId)
+    let subtract
+    if (orderItem.quantity > req.body.quantity) {
+      subtract = true
+    }
+    await orderItem.update({
+      quantity: req.body.quantity
+    })
+
     const cart = await Order.findOne({
       where: {
         id: req.body.orderId,
         status: 'in-progress'
       }
     })
-    const subtotal =
-      cart.orderSubtotal + updatedItem.price * updatedItem.quantity
-    cart.updateOrderSubtotal(subtotal)
+    let subtotal
+    if (subtract) {
+      subtotal = cart.orderSubtotal - orderItem.price
+    } else {
+      subtotal = cart.orderSubtotal + orderItem.price
+    }
+
+    await cart.updateOrderSubtotal(subtotal)
     res.status(200).send({
-      order: updatedItem,
+      order: orderItem,
       subtotal: cart.orderSubtotal
     })
   } catch (error) {

@@ -1,6 +1,6 @@
 # Grace Shopper | Grace & Co.
 
-_Grace Yourself or Your Love with Beautifully Crafted & Elegant Designs by Grace & Co._
+_Grace Yourself with Beautifully Crafted & Elegant Designs by Grace & Co._
 
 **Grace & Co.** is a mock e-commerce website featuring earrings, created by a team of developers during the [Grace Hopper Program](https://www.gracehopper.com/) at Fullstack Academy.
 

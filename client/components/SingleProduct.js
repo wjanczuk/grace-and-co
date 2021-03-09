@@ -4,13 +4,12 @@ import {getSingleProduct} from '../store/products'
 import {addToGuestCart} from '../store/guestCart'
 import {createOrGetOrder, createOrderItem, editQuantity} from '../store/order'
 
-//api/products/:id
-//dispatches to redux for single product data
-
 class SingleProduct extends Component {
   constructor(props) {
     super(props)
-
+    this.state = {
+      added: false
+    }
     this.handleAddCart = this.handleAddCart.bind(this)
   }
 
@@ -18,20 +17,19 @@ class SingleProduct extends Component {
     this.props.loadSingleProduct(this.props.match.params.id)
   }
 
-  handleAddCart(singleProductId) {
+  async handleAddCart() {
     if (!this.props.userId) {
-      // user doesn't exist
+      // for guest user
       if (!localStorage.getItem('cart')) {
-        // no cart in local storage
         const emptyCart = {
           items: [],
           subtotal: 0
         }
         localStorage.setItem('cart', JSON.stringify(emptyCart)) // create cart for guest user
       }
-      addToGuestCart(singleProductId)
+      addToGuestCart(this.props.singleProduct.id) // adds to localStorage cart
     } else {
-      this.props.createOrGetOrder() // database creates or finds user cart and sets it to state
+      await this.props.createOrGetOrder() // database creates or finds user cart and sets it to state
       let {singleProduct, orderItems} = this.props
 
       let selectedItem
@@ -50,6 +48,15 @@ class SingleProduct extends Component {
         this.props.createOrderItem(singleProduct) // creates new orderItem
       }
     }
+
+    this.setState({
+      added: true
+    })
+    setTimeout(() => {
+      this.setState({
+        added: false
+      })
+    }, 1000)
   }
 
   render() {
@@ -80,6 +87,8 @@ class SingleProduct extends Component {
             >
               Add To Cart
             </button>
+            <br />
+            {this.state.added ? <span>Added to cart!</span> : ''}
           </div>
         )}
       </div>

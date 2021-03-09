@@ -12,7 +12,8 @@ const COMPLETE_ORDER = 'COMPLETE_ORDER'
 const gotOrder = orderObj => ({
   type: GOT_ORDER,
   order: orderObj.items,
-  subtotal: orderObj.subtotal
+  subtotal: orderObj.subtotal,
+  total: orderObj.total
 })
 const removedItem = (itemId, order) => ({
   type: REMOVE_ORDER_ITEM,
@@ -21,7 +22,8 @@ const removedItem = (itemId, order) => ({
 })
 const editedQuantity = orderObj => ({
   type: EDIT_QUANTITY,
-  orderObj
+  order: orderObj.order,
+  subtotal: orderObj.subtotal
 })
 
 const createdOrder = order => ({
@@ -72,7 +74,7 @@ export const editQuantity = orderItemObj => {
       )
       dispatch(editedQuantity(orderObj))
     } catch (error) {
-      console.log('Error in editing quantity')
+      console.log('Error in editing quantity', error)
     }
   }
 }
@@ -130,18 +132,18 @@ export default function(state = initialState, action) {
       return {
         ...state,
         items: state.items.filter(item => item.orderItem.id !== action.itemId),
-        total: action.order.orderSubtotal
+        subtotal: action.order.orderSubtotal
       }
     case EDIT_QUANTITY:
       return {
         ...state,
         items: state.items.map(item => {
-          if (item.orderItem.id === action.orderObj.id) {
-            item.orderItem.quantity = action.orderObj.quantity
+          if (item.orderItem.id === action.order.id) {
+            item.orderItem.quantity = action.order.quantity
           }
           return item
         }),
-        subtotal: action.orderObj.subtotal
+        subtotal: action.subtotal
       }
     case CREATE_ORDER:
       return {
@@ -151,7 +153,8 @@ export default function(state = initialState, action) {
     case CREATE_ORDERITEM:
       return {
         ...state,
-        items: action.order
+        items: action.order,
+        subtotal: action.subtotal
       }
     case COMPLETE_ORDER:
       return {

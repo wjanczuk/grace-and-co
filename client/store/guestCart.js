@@ -1,14 +1,13 @@
 import axios from 'axios'
 
-export const addToGuestCart = async productId => {
-  // guest clicks add to cart
+export const addToGuestCart = async (productId, qty) => {
   try {
     const {data: product} = await axios.get(`/api/products/${productId}`) // grab product
     const productObj = {
       // create productObj to store product and orderItem info and mimic database
       ...product,
       orderItem: {
-        quantity: 1,
+        quantity: qty,
         id: product.id,
         price: product.price
       }
@@ -19,15 +18,15 @@ export const addToGuestCart = async productId => {
     cart.items = cart.items.map(item => {
       // updates quantity if already in cart
       if (item.id === productObj.id) {
-        item.orderItem.quantity++
+        item.orderItem.quantity += qty
         inCart = true
-        cart.subtotal += item.orderItem.price
+        cart.subtotal += item.orderItem.price * qty
       }
       return item
     })
     if (!inCart) {
       cart.items.push(productObj) // add to items array
-      cart.subtotal += cart.items[cart.items.length - 1].orderItem.price // grabs last index for orderItem price
+      cart.subtotal += cart.items[cart.items.length - 1].orderItem.price * qty // grabs last index for orderItem price
     }
 
     localStorage.setItem('cart', JSON.stringify(cart)) // reset guest cart with added product
