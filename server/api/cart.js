@@ -171,6 +171,21 @@ router.put('/item/:itemId', async (req, res, next) => {
   }
 })
 
+//DELETE /api/cart/removecart
+router.delete('/removecart', async (req, res, next) => {
+  try {
+    const carts = await req.user.getOrders({
+      where: {
+        status: 'in-progress'
+      }
+    })
+    await carts[0].destroy()
+    res.sendStatus(200)
+  } catch (error) {
+    next(error)
+  }
+})
+
 //PUT /api/cart/:userId -- user checkout
 router.put('/:userId', async (req, res, next) => {
   try {
