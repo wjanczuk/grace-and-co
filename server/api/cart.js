@@ -108,21 +108,6 @@ router.delete('/', async (req, res, next) => {
   }
 })
 
-//ADDED DELETE CART ROUTE
-//DELETE /api/cart/cartId
-router.delete('/api/cart/:cartId', async (req, res, next) => {
-  try {
-    await OrderItem.destroy({
-      where: {
-        id: req.body.itemId
-      }
-    })
-    res.sendStatus(200)
-  } catch (error) {
-    next(error)
-  }
-})
-
 //PUT /api/cart
 router.put('/', async (req, res, next) => {
   try {

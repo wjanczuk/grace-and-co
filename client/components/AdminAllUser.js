@@ -23,42 +23,69 @@ export class AdminAllUser extends React.Component {
       <div>
         <h2>Users</h2>
 
-        {users.map(user => (
-          <div key={user.id}>
-            <p>
-              <b>
-                {user.id} |{' '}
-                {user.firstName ? user.firstName : 'No inputted first name | '}{' '}
-                {user.lastName ? user.lastName : 'No inputted last name'}
-              </b>
-            </p>
-            <p>
-              email: {user.email} | Google ID:{' '}
-              {user.googleId ? user.googleId : 'No Google account associated'}
-            </p>
-            <p>
-              user status:{' '}
-              {user.isAdmin ? 'administrator' : 'non-administrator'}
-            </p>
-            <p>
-              billing address:{' '}
-              {user.billingAddress ? user.billingAddress : 'No address on file'}
-            </p>
-            <p>
-              billing address:{' '}
-              {user.billingAddress2
-                ? user.billingAddress2
-                : 'No address on file'}
-            </p>
-            <p>
-              city: {user.billingCity ? user.billingCity : 'No city on file'} |
-              state:{' '}
-              {user.billingState ? user.billingState : 'No state on file'}
-            </p>
-            <p>ZIP: {user.billingZIP ? user.billingZIP : 'No ZIP on file'}</p>
-            <hr />
-          </div>
-        ))}
+        <table>
+          {users.map(user => (
+            <div key={user.id}>
+              <tbody>
+                <tr>
+                  <th>User ID</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Email</th>
+                  <th>Google ID</th>
+                  <th>User Status</th>
+                </tr>
+                <tr>
+                  <td>{user.id}</td>
+                  <td>
+                    {user.firstName ? user.firstName : 'No inputted first name'}
+                  </td>
+                  <td>
+                    {user.lastName ? user.lastName : 'No inputted last name'}
+                  </td>
+                  <td>{user.email}</td>
+                  <td>
+                    {user.googleId
+                      ? user.googleId
+                      : 'No Google account associated'}
+                  </td>
+                  <td>
+                    {user.isAdmin ? 'administrator' : 'non-administrator'}
+                  </td>
+                </tr>
+                <tr>
+                  <th>Billing Address</th>
+                  <th>Billing Address</th>
+                  <th>Billing City</th>
+                  <th>Billing State</th>
+                  <th>Billing ZIP</th>
+                </tr>
+                <tr>
+                  <td>
+                    {user.billingAddress
+                      ? user.billingAddress
+                      : 'No address on file'}
+                  </td>
+                  <td>
+                    {user.billingAddress2
+                      ? user.billingAddress2
+                      : 'No address on file'}
+                  </td>
+                  <td>
+                    {user.billingCity ? user.billingCity : 'No city on file'}
+                  </td>
+                  <td>
+                    {user.billingState ? user.billingState : 'No state on file'}
+                  </td>
+                  <td>
+                    {user.billingZIP ? user.billingZIP : 'No ZIP on file'}
+                  </td>
+                </tr>
+              </tbody>
+              <hr />
+            </div>
+          ))}
+        </table>
       </div>
     )
   }
