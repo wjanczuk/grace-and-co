@@ -1,28 +1,25 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import UserHome from './user-home'
 
-const LandingPage = () => {
+const LandingPage = props => {
   return (
     <div className="home-page">
-      <h1>Welcome!</h1>
-      <div className="home-page-body">
-        <div>
-          <Link to="/products">
-            <span id="homepage-students">All Products</span>
-          </Link>
-        </div>
-      </div>
+      {props.isLoggedIn ? (
+        <UserHome />
+      ) : (
+        <h1>
+          <i>Grace Yourself with Beautifully Crafted & Elegant Designs</i>
+        </h1>
+      )}
 
       <div className="home-page-content">
         <p>
-          Cupcake ipsum dolor sit. Amet muffin sweet roll sugar plum. Lemon
-          drops sweet icing. Lollipop sugar plum caramels. Tart bear claw
-          chocolate candy powder pastry. Halvah dessert tiramisu pudding chupa
-          chups danish tart. Lemon drops muffin candy dragée. Donut gingerbread
-          jelly-o danish topping gingerbread pastry powder brownie. Jelly beans
-          topping cotton candy sesame snaps sweet roll fruitcake sesame snaps
-          jelly beans halvah. Chocolate cake tootsie roll candy canes tiramisu
-          cupcake marzipan apple pie.
+          Founded in 2021 by Michelle Dacal, Victoria Ho, Weronika Janczuk, and
+          Kay XiongPachay, four developers at the Grace Hopper Program at
+          Fullstack Academy, Grace & Co. is an all-around earring store for
+          women. From classic shapes to creative twists, our impeccably crafted
+          collection of earrings invites you to make your own rules. Explore
+          stud earrings, hoops, and more.
         </p>
       </div>
     </div>

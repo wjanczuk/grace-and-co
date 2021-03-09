@@ -11,22 +11,26 @@ class AllProduct extends React.Component {
     return (
       <div>
         <div>
-          <h3>Grace Shopper</h3>
-          <h5>Quote insert</h5>
+          <h3>Our Earring Collection</h3>
+          <h5>
+            "Trust and love are wonderful, but don't forget the earrings."
+            —Estée Lauder
+          </h5>
         </div>
-        {this.props.products.map(product => (
-          <div key={product.id}>
-            <Link to={`/products/${product.id}`}>
-              <img
-                src={product.imageUrl}
-                alt={product.name}
-                style={{width: '275px'}}
-              />
-              <h5>{product.name}</h5>
-              <span>${parseFloat(product.price)}</span>
-            </Link>
-          </div>
-        ))}
+
+        <section className="tiles">
+          {this.props.products.map(product => (
+            <article className="style1" key={product.id}>
+              <span className="image">
+                <img src={product.imageUrl} alt={product.name} />
+              </span>
+              <Link to={`/products/${product.id}`}>
+                <h2>{product.name}</h2>
+                <div className="content">${product.price.toFixed(2)}</div>
+              </Link>
+            </article>
+          ))}
+        </section>
       </div>
     )
   }
@@ -40,7 +44,6 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    //make sure getProducts is imported with correct file path
     getProducts: () => dispatch(getProducts())
   }
 }
