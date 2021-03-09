@@ -2,12 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {getSingleProduct} from '../store/products'
 import {addToGuestCart} from '../store/guestCart'
-import {
-  // addToOrder,
-  createOrder,
-  createOrderItem,
-  editQuantity
-} from '../store/order'
+import {createOrGetOrder, createOrderItem, editQuantity} from '../store/order'
 
 //api/products/:id
 //dispatches to redux for single product data
@@ -21,38 +16,38 @@ class SingleProduct extends Component {
 
   componentDidMount() {
     this.props.loadSingleProduct(this.props.match.params.id)
-    // if (this.props.userId) {
-    //   this.props.createOrder() //if user logged in, findOrCreate Order/cart
-    // }
   }
 
   handleAddCart(singleProductId) {
     if (!this.props.userId) {
+      // user doesn't exist
       if (!localStorage.getItem('cart')) {
+        // no cart in local storage
         const emptyCart = {
-          items: []
+          items: [],
+          subtotal: 0
         }
         localStorage.setItem('cart', JSON.stringify(emptyCart)) // create cart for guest user
       }
       addToGuestCart(singleProductId)
     } else {
-      this.props.createOrder()
+      this.props.createOrGetOrder() // database creates or finds user cart and sets it to state
       let {singleProduct, orderItems} = this.props
 
       let selectedItem
-
-      orderItems = orderItems.map(item => {
-        if (item.id === singleProduct.id) {
-          selectedItem = item
+      orderItems = orderItems.map(product => {
+        // checks to see if product is in user cart
+        if (product.id === singleProduct.id) {
+          selectedItem = product
         }
-        return item
+        return product
       })
 
       if (selectedItem) {
         selectedItem.orderItem.quantity++
-        this.props.editQuantity(selectedItem.orderItem)
+        this.props.editQuantity(selectedItem.orderItem) // adds quantity to existing orderItem
       } else {
-        this.props.createOrderItem(singleProduct)
+        this.props.createOrderItem(singleProduct) // creates new orderItem
       }
     }
   }
@@ -103,8 +98,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     loadSingleProduct: id => dispatch(getSingleProduct(id)),
-    // addToCart: (productId, qty) => dispatch(addToOrder(productId, qty)),
-    createOrder: () => dispatch(createOrder()),
+    createOrGetOrder: () => dispatch(createOrGetOrder()),
     createOrderItem: product => dispatch(createOrderItem(product)),
     editQuantity: itemObj => dispatch(editQuantity(itemObj))
   }
