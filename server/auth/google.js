@@ -18,12 +18,12 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
     (token, refreshToken, profile, done) => {
       const googleId = profile.id
       const email = profile.emails[0].value
-      const first_name = profile.name.givenName
-      const last_name = profile.name.familyName
+      const firstName = profile.name.givenName
+      const lastName = profile.name.familyName
 
       User.findOrCreate({
         where: {googleId},
-        defaults: {email, first_name, last_name}
+        defaults: {email, firstName, lastName}
       })
         .then(([user]) => done(null, user))
         .catch(done)
