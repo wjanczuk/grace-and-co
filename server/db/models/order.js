@@ -73,8 +73,8 @@ const Order = db.define('order', {
 })
 
 //instance methods
-Order.prototype.updateOrderSubtotal = async function(price, quantity) {
-  this.orderSubtotal += price * quantity
+Order.prototype.updateOrderSubtotal = async function(subtotal) {
+  this.orderSubtotal = subtotal
   await this.save()
 }
 

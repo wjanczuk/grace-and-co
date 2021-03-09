@@ -19,7 +19,9 @@ class Cart extends React.Component {
   constructor() {
     super()
     this.state = {
-      cart: [],
+      cart: {
+        items: []
+      },
       displayCheckout: false,
       displayOrderSuccess: false,
       email: ''
@@ -34,18 +36,21 @@ class Cart extends React.Component {
 
   async componentDidMount() {
     if (this.props.user.id) {
+      // if user exists, grab cart from store
       await this.props.getOrder(this.props.user.id)
+      console.log('in componentDidMount')
     } else if (localStorage.getItem('cart')) {
-      const localCart = JSON.parse(localStorage.getItem('cart')).items
+      // if cart exists in localstorage grab cart and set to local state
+      const localCart = JSON.parse(localStorage.getItem('cart'))
       this.setState({
         cart: localCart
       })
     }
   }
 
-  handleClickPlus(id, quantity) {
+  handleClickPlus(id, quantity, orderId) {
     quantity++
-    const itemObj = {id, quantity}
+    const itemObj = {id, quantity, orderId}
     if (this.props.user.id) {
       this.props.editQuantity(itemObj)
     } else {
@@ -56,14 +61,13 @@ class Cart extends React.Component {
     }
   }
 
-  handleClickMinus(id, quantity) {
+  handleClickMinus(id, quantity, orderId) {
     quantity--
-    const itemObj = {id, quantity}
+    const itemObj = {id, quantity, orderId}
     if (this.props.user.id) {
       this.props.editQuantity(itemObj)
     } else {
-      editGuestQuantity(id, quantity)
-      const localCart = JSON.parse(localStorage.getItem('cart')).items
+      const localCart = editGuestQuantity(id, quantity)
       this.setState({
         cart: localCart
       })
@@ -85,13 +89,17 @@ class Cart extends React.Component {
     evt.preventDefault()
 
     const orderObj = {
-      products: this.state.cart,
-      email: this.state.email
+      products: this.state.cart.items,
+      email: this.state.email,
+      subtotal: this.state.cart.subtotal
     }
 
     guestCheckout(orderObj)
     this.setState({
-      cart: [],
+      cart: {
+        items: []
+      },
+      email: '',
       displayOrderSuccess: true
     })
   }
@@ -116,8 +124,7 @@ class Cart extends React.Component {
   }
   render() {
     const {displayOrderSuccess} = this.state
-    const cart = this.props.user.id ? this.props.orderItems : this.state.cart
-
+    const cart = this.props.user.id ? this.props.order : this.state.cart
     return displayOrderSuccess ? (
       <Redirect to="/complete" />
     ) : (
@@ -125,42 +132,68 @@ class Cart extends React.Component {
         {// (!this.props.userId && !this.state.cart.length) ? ( // cannot get this to work and also say cart is empty after loading ):
         //     <h1>Cart Loading...</h1>
         //   ) : (
-        cart.map(item => (
-          <div key={item.id}>
-            <img src={item.imageUrl} alt={item.name} style={{width: '275px'}} />
-            <h1>{item.name}</h1>
-            <span>QTY: {item.orderItem.quantity}</span>
-            <button
-              onClick={() =>
-                this.handleClickPlus(item.orderItem.id, item.orderItem.quantity)
-              }
-              type="submit"
-            >
-              +
-            </button>
-            <button
-              onClick={() =>
-                this.handleClickMinus(
-                  item.orderItem.id,
-                  item.orderItem.quantity
-                )
-              }
-              type="submit"
-            >
-              -
-            </button>
-            <button
-              onClick={() => this.handleRemove(item.orderItem.id, item.id)}
-              type="submit"
-            >
-              Remove
+        Object.keys(cart).length &&
+          cart.items.map(item => (
+            <div key={item.id}>
+              <img
+                src={item.imageUrl}
+                alt={item.name}
+                style={{width: '275px'}}
+              />
+              <h1>{item.name}</h1>
+              <span>QTY: {item.orderItem.quantity}</span>
+              <span>Item Price: ${item.orderItem.price}</span>
+              <span>
+                Item Total: ${item.orderItem.price * item.orderItem.quantity}
+              </span>
+              <button
+                onClick={() =>
+                  this.handleClickPlus(
+                    item.orderItem.id,
+                    item.orderItem.quantity,
+                    item.orderItem.orderId
+                  )
+                }
+                type="submit"
+              >
+                +
+              </button>
+              <button
+                onClick={() =>
+                  this.handleClickMinus(
+                    item.orderItem.id,
+                    item.orderItem.quantity,
+                    item.orderItem.orderId
+                  )
+                }
+                type="submit"
+              >
+                -
+              </button>
+              <button
+                onClick={() => this.handleRemove(item.orderItem.id, item.id)}
+                type="submit"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+
+        {/* {cart.items.length ? (
+          <div>
+            Total: ${cart.subtotal}
+            <button type="submit" onClick={() => this.startCheckout()}>
+              Checkout
             </button>
           </div>
-        ))}
+        ) : (
+          <h1>Your Cart Is Empty</h1>
+        )} */}
 
-        {!cart.length && <h1>Your Cart Is Empty</h1>}
-        {cart.length && (
-          <>
+        {cart.items.length ? (
+          <div>
+            Total: ${cart.subtotal}
+            {/* ADDED DELETE CART BUTTON */}
             <button
               type="button"
               onClick={() => {
@@ -168,7 +201,9 @@ class Cart extends React.Component {
                 else {
                   removeGuestCart()
                   this.setState({
-                    cart: []
+                    cart: {
+                      items: []
+                    }
                   })
                 }
               }}
@@ -178,7 +213,9 @@ class Cart extends React.Component {
             <button type="submit" onClick={() => this.startCheckout()}>
               Checkout
             </button>
-          </>
+          </div>
+        ) : (
+          <h1>Your Cart Is Empty</h1>
         )}
 
         {this.state.displayCheckout &&
@@ -204,7 +241,7 @@ class Cart extends React.Component {
 
 const mapState = state => {
   return {
-    orderItems: state.order.items,
+    order: state.order,
     userId: state.user.id
   }
 }

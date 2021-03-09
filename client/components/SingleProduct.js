@@ -5,10 +5,6 @@ import {getSingleProduct} from '../store/products'
 import SingleProductForm from './SingleProductForm' //add to component index
 
 class SingleProduct extends Component {
-  constructor(props) {
-    super(props)
-  }
-
   componentDidMount() {
     this.props.loadSingleProduct(this.props.match.params.id)
   }
@@ -30,7 +26,7 @@ class SingleProduct extends Component {
             <h1>{singleProduct.name}</h1>
             <h3>${singleProduct.price}</h3>
             {singleProduct.inventory === 0 && (
-              <h3>This item currently out of stock</h3>
+              <h3>This item is currently out of stock :(</h3>
             )}
             <p>{singleProduct.description}</p>
             <SingleProductForm singleProduct={singleProduct} />

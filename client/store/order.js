@@ -10,17 +10,21 @@ const COMPLETE_ORDER = 'COMPLETE_ORDER'
 const DELETED_CART = 'DELETED_CART'
 
 // ACTION CREATORS
-const gotOrder = order => ({
+const gotOrder = orderObj => ({
   type: GOT_ORDER,
+  order: orderObj.items,
+  subtotal: orderObj.subtotal,
+  total: orderObj.total
+})
+const removedItem = (itemId, order) => ({
+  type: REMOVE_ORDER_ITEM,
+  itemId,
   order
 })
-const removedItem = itemId => ({
-  type: REMOVE_ORDER_ITEM,
-  itemId
-})
-const editedQuantity = itemObj => ({
+const editedQuantity = orderObj => ({
   type: EDIT_QUANTITY,
-  itemObj
+  order: orderObj.order,
+  subtotal: orderObj.subtotal
 })
 
 const createdOrder = order => ({
@@ -28,9 +32,10 @@ const createdOrder = order => ({
   order
 })
 
-const createdOrderItem = order => ({
+const createdOrderItem = orderObj => ({
   type: CREATE_ORDERITEM,
-  order
+  order: orderObj.order,
+  subtotal: orderObj.subtotal
 })
 
 const completedOrder = order => ({
@@ -46,35 +51,40 @@ const deletedCart = () => ({
 export const getOrder = userId => {
   return async dispatch => {
     try {
-      const {data: order} = await axios.get(`/api/cart/${userId}`)
-      dispatch(gotOrder(order))
+      const {data: orderObj} = await axios.get(`/api/cart/${userId}`)
+      dispatch(gotOrder(orderObj))
     } catch (error) {
       console.log('error loading order from server')
     }
   }
 }
+
 export const removeItem = itemId => {
   return async dispatch => {
     try {
-      await axios.delete('/api/cart', {data: {itemId}})
-      dispatch(removedItem(itemId))
+      const {data: order} = await axios.delete(`/api/cart/item/${itemId}`)
+      dispatch(removedItem(itemId, order))
     } catch (error) {
       console.log('Error removing item from server')
     }
   }
 }
-export const editQuantity = itemObj => {
+
+export const editQuantity = orderItemObj => {
   return async dispatch => {
     try {
-      const {data: updatedItem} = await axios.put('/api/cart', itemObj)
-      dispatch(editedQuantity(updatedItem))
+      const {data: orderObj} = await axios.put(
+        `/api/cart/item/${orderItemObj.id}`,
+        orderItemObj
+      )
+      dispatch(editedQuantity(orderObj))
     } catch (error) {
-      console.log('Error in editing quantity')
+      console.log('Error in editing quantity', error)
     }
   }
 }
 
-export const createOrder = () => {
+export const createOrGetOrder = () => {
   return async dispatch => {
     try {
       const {data: order} = await axios.post('/api/cart/')
@@ -89,11 +99,11 @@ export const createOrderItem = (product, qty) => {
   //takes in qty and product
   return async dispatch => {
     try {
-      const {data: order} = await axios.post(`/api/cart/${product.id}`, {
+      const {data: orderObj} = await axios.post(`/api/cart/${product.id}`, {
         product,
         qty
       })
-      dispatch(createdOrderItem(order))
+      dispatch(createdOrderItem(orderObj))
     } catch (error) {
       console.log('error creating new cart item from server')
     }
@@ -124,7 +134,8 @@ export const deleteCart = () => {
 }
 
 const initialState = {
-  items: []
+  items: [],
+  subtotal: 0
 }
 
 export default function(state = initialState, action) {
@@ -132,22 +143,25 @@ export default function(state = initialState, action) {
     case GOT_ORDER:
       return {
         ...state,
-        items: action.order
+        items: action.order,
+        subtotal: action.subtotal
       }
     case REMOVE_ORDER_ITEM:
       return {
         ...state,
-        items: state.items.filter(item => item.orderItem.id !== action.itemId)
+        items: state.items.filter(item => item.orderItem.id !== action.itemId),
+        subtotal: action.order.orderSubtotal
       }
     case EDIT_QUANTITY:
       return {
         ...state,
         items: state.items.map(item => {
-          if (item.orderItem.id === action.itemObj.id) {
-            item.orderItem.quantity = action.itemObj.quantity
+          if (item.orderItem.id === action.order.id) {
+            item.orderItem.quantity = action.order.quantity
           }
           return item
-        })
+        }),
+        subtotal: action.subtotal
       }
     case CREATE_ORDER:
       return {
@@ -157,7 +171,8 @@ export default function(state = initialState, action) {
     case CREATE_ORDERITEM:
       return {
         ...state,
-        items: action.order
+        items: action.order,
+        subtotal: action.subtotal
       }
     case COMPLETE_ORDER:
       return {
