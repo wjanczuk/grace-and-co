@@ -12,7 +12,8 @@ import {
   Cart,
   OrderProcessed,
   AdminAllUser,
-  AdminAllProduct
+  AdminAllProduct,
+  UserProfile
 } from './components'
 import {me} from './store'
 
@@ -47,6 +48,11 @@ class Routes extends Component {
                 exact
                 path="/cart"
                 component={() => <Cart user={user} />}
+              />
+              <Route
+                exact
+                path="/profile"
+                render={() => <UserProfile user={user} />}
               />
 
               {isAdmin ? (

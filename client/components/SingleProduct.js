@@ -15,16 +15,18 @@ class SingleProduct extends Component {
     return (
       <div id="single-product-container">
         {singleProduct === undefined ? (
-          <h1>Product Loading...</h1>
+          <h4>Product Loading...</h4>
         ) : (
           <div>
             <img
               src={singleProduct.imageUrl}
               alt={singleProduct.name}
-              style={{width: '275px'}}
+              className="image left"
             />
-            <h1>{singleProduct.name}</h1>
-            <h3>${singleProduct.price}</h3>
+            <h3>{singleProduct.name}</h3>
+            <h3>
+              ${singleProduct.price ? singleProduct.price.toFixed(2) : ''}
+            </h3>
             {singleProduct.inventory === 0 && (
               <h3>This item is currently out of stock :(</h3>
             )}

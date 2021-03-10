@@ -35,9 +35,9 @@ class AdminAllProduct extends React.Component {
             <img
               src={product.imageUrl}
               alt={product.name}
-              style={{width: '275px'}}
+              style={{width: '175px'}}
+              className="image left"
             />
-            <br />
             <span>
               <strong>id:</strong> {product.id}
             </span>
@@ -51,7 +51,7 @@ class AdminAllProduct extends React.Component {
             </span>
             <br />
             <span>
-              <strong>price:</strong> {product.price}
+              <strong>price:</strong> ${product.price.toFixed(2)}
             </span>
             <br />
             <span>
@@ -62,16 +62,22 @@ class AdminAllProduct extends React.Component {
               <strong>description:</strong> {product.description}
             </span>
             <br />
+            <br />
             <span>
               <button
                 type="button"
                 onClick={() => this.props.deleteProduct(product.id)}
+                className="button small"
               >
                 Delete
               </button>
             </span>
             <span>
-              <button type="button" onClick={this.handleClick}>
+              <button
+                type="button"
+                onClick={this.handleClick}
+                className="button small"
+              >
                 Update
               </button>
             </span>
@@ -82,7 +88,6 @@ class AdminAllProduct extends React.Component {
                 hideUpdateForm={this.handleClick}
               />
             )}
-
             <hr />
           </div>
         ))}
