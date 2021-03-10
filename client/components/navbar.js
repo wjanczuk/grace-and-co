@@ -21,7 +21,12 @@ const Navbar = ({handleClick, isLoggedIn, isAdmin}) => (
                     <Link to="/products">Earrings</Link>
                   </li>
                   <li className="nav__item">
-                    <Link to="/cart">Cart</Link>
+                    <Link to="/cart">
+                      <i className="fas fa-shopping-cart" />
+                    </Link>
+                  </li>
+                  <li className="nav__item">
+                    <Link to="/profile/">Profile</Link>
                   </li>
                   <li className="nav__item">
                     <a href="#" onClick={handleClick}>
@@ -51,7 +56,9 @@ const Navbar = ({handleClick, isLoggedIn, isAdmin}) => (
                     <Link to="/products">Earrings</Link>
                   </li>
                   <li className="nav__item">
-                    <Link to="/cart">Cart</Link>
+                    <Link to="/cart">
+                      <i className="fas fa-shopping-cart" />
+                    </Link>
                   </li>
                   <li className="nav__item">
                     <Link to="/login">Login</Link>

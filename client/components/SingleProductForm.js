@@ -84,17 +84,16 @@ class SingleProductForm extends Component {
               <option value="5">5</option>
             </select>
           </label>
-
           <button
             disabled={!singleProduct.inventory > 0}
             type="submit"
             value="Submit"
+            className="button small"
           >
             Add To Cart
-          </button>
+          </button>{' '}
+          {this.state.added ? <span>Added to cart!</span> : ''}
         </form>
-        <br />
-        {this.state.added ? <span>Added to cart!</span> : ''}
       </div>
     )
   }

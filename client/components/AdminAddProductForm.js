@@ -48,7 +48,6 @@ class AdminAddProductForm extends React.Component {
             onChange={this.handleChange}
             value={this.state.name}
           />
-          <br />
           <label>Price:</label>
           <input
             type="text"
@@ -56,7 +55,6 @@ class AdminAddProductForm extends React.Component {
             onChange={this.handleChange}
             value={this.state.price}
           />
-          <br />
           <label>Category:</label>
           <select
             name="category"
@@ -72,7 +70,6 @@ class AdminAddProductForm extends React.Component {
             <option value="Stud">Stud</option>
             <option value="Statement">Statement</option>
           </select>
-          <br />
           <label>Inventory:</label>
           <input
             type="text"
@@ -80,7 +77,6 @@ class AdminAddProductForm extends React.Component {
             onChange={this.handleChange}
             value={this.state.inventory}
           />
-          <br />
           <label>Image URL:</label>
           <input
             type="text"
@@ -88,7 +84,6 @@ class AdminAddProductForm extends React.Component {
             onChange={this.handleChange}
             value={this.state.imageUrl}
           />
-          <br />
           <label>Description:</label>
           <input
             type="text"
@@ -96,9 +91,7 @@ class AdminAddProductForm extends React.Component {
             onChange={this.handleChange}
             value={this.state.description}
           />
-          <br />
           <input type="submit" onClick={this.props.handleClick} />
-          <br />
         </form>
       </div>
     )

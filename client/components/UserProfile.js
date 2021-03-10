@@ -1,15 +1,14 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {loadUserProfile} from '../store/user'
+import {me} from '../store/user'
 
 class UserProfile extends React.Component {
   componentDidMount() {
-    this.props.loadUserProfile(this.props.match.params.id)
+    this.props.loadUserProfile()
   }
 
   render() {
     const {singleUser} = this.props
-    console.log('singleUser-->', singleUser)
 
     return (
       <div id="single-user-container">
@@ -17,19 +16,77 @@ class UserProfile extends React.Component {
           <h1>User Profile Loading...</h1>
         ) : (
           <div>
-            <h1>Profile | {singleUser.email}</h1>
+            <h3>Profile | {singleUser.email}</h3>
             <h4>User Profile</h4>
-            <p>email: {singleUser.email}</p>
-            <p>first name: {singleUser.firstName}</p>
-            <p>last name: {singleUser.lastName}</p>
+            <table>
+              <tbody>
+                <tr>
+                  <th>Email:</th>
+                  <td>{singleUser.email}</td>
+                </tr>
+                <tr>
+                  <th>First Name:</th>
+                  <td>
+                    {singleUser.firstName
+                      ? singleUser.firstName
+                      : 'No inputted first name'}
+                  </td>
+                </tr>
+                <tr>
+                  <th>Last Name:</th>
+                  <td>
+                    {singleUser.lastName
+                      ? singleUser.lastName
+                      : 'No inputted last name'}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
             <h4>Billing Address</h4>
-            <p>address: {singleUser.billingAddress}</p>
-            <p>address: {singleUser.billingAddress2}</p>
-            <p>
-              city: {singleUser.billingCity} | state: {singleUser.state}
-            </p>
-            <p>ZIP: {singleUser.billingZIP}</p>
-            <h4>Order History</h4>
+            <table>
+              <tbody>
+                <tr>
+                  <th>Billing Address:</th>
+                  <td>
+                    {singleUser.billingAddress
+                      ? singleUser.billingAddress
+                      : 'No inputted billing address'}
+                  </td>
+                </tr>
+                <tr>
+                  <th>Billing Address:</th>
+                  <td>
+                    {singleUser.billingAddress2
+                      ? singleUser.billingAdress2
+                      : 'No inputted billing address'}
+                  </td>
+                </tr>
+                <tr>
+                  <th>Billing City:</th>
+                  <td>
+                    {singleUser.billingCity
+                      ? singleUser.billingCity
+                      : 'No inputted billing city'}
+                  </td>
+                </tr>
+                <tr>
+                  <th>Billing State:</th>
+                  <td>
+                    {singleUser.billingState
+                      ? singleUser.billingState
+                      : 'No inputted billing state'}
+                  </td>
+                </tr>
+                <tr>
+                  <th>Billing ZIP:</th>
+                  <td>
+                    {singleUser.billingZIP
+                      ? singleUser.billingZIP
+                      : 'No inputted billing ZIP'}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         )}
       </div>
@@ -45,7 +102,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadUserProfile: id => dispatch(loadUserProfile(id))
+    loadUserProfile: () => dispatch(me())
   }
 }
 

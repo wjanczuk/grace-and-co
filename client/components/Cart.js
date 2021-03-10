@@ -138,44 +138,50 @@ class Cart extends React.Component {
               <img
                 src={item.imageUrl}
                 alt={item.name}
-                style={{width: '275px'}}
+                style={{width: '150px'}}
+                className="image left"
               />
-              <h1>{item.name}</h1>
-              <span>QTY: {item.orderItem.quantity}</span>
-              <span>Item Price: ${item.orderItem.price}</span>
-              <span>
-                Item Total: ${item.orderItem.price * item.orderItem.quantity}
-              </span>
-              <button
-                onClick={() =>
-                  this.handleClickPlus(
-                    item.orderItem.id,
-                    item.orderItem.quantity,
-                    item.orderItem.orderId
-                  )
-                }
-                type="submit"
-              >
-                +
-              </button>
-              <button
-                onClick={() =>
-                  this.handleClickMinus(
-                    item.orderItem.id,
-                    item.orderItem.quantity,
-                    item.orderItem.orderId
-                  )
-                }
-                type="submit"
-              >
-                -
-              </button>
+              <h4>{item.name}</h4>
+              <p>
+                <b>Price:</b> ${item.orderItem.price} | <b>Quantity:</b>{' '}
+                {item.orderItem.quantity}{' '}
+                <button
+                  onClick={() =>
+                    this.handleClickPlus(
+                      item.orderItem.id,
+                      item.orderItem.quantity,
+                      item.orderItem.orderId
+                    )
+                  }
+                  type="submit"
+                  className="button small"
+                >
+                  +
+                </button>
+                <button
+                  onClick={() =>
+                    this.handleClickMinus(
+                      item.orderItem.id,
+                      item.orderItem.quantity,
+                      item.orderItem.orderId
+                    )
+                  }
+                  type="submit"
+                  className="button small"
+                >
+                  -
+                </button>{' '}
+                | <b>Sub-Total:</b> ${item.orderItem.price *
+                  item.orderItem.quantity}
+              </p>
               <button
                 onClick={() => this.handleRemove(item.orderItem.id, item.id)}
                 type="submit"
+                className="button small"
               >
                 Remove
               </button>
+              <hr />
             </div>
           ))}
 
@@ -192,10 +198,13 @@ class Cart extends React.Component {
 
         {cart.items.length ? (
           <div>
-            Total: ${cart.subtotal}
+            <p>
+              <b>Cart Total:</b> ${cart.subtotal.toFixed(2)}
+            </p>
             {/* ADDED DELETE CART BUTTON */}
             <button
               type="button"
+              className="button small"
               onClick={() => {
                 if (this.props.userId) this.props.deleteCart()
                 else {
@@ -210,12 +219,16 @@ class Cart extends React.Component {
             >
               Clear Cart
             </button>
-            <button type="submit" onClick={() => this.startCheckout()}>
+            <button
+              type="submit"
+              className="button small"
+              onClick={() => this.startCheckout()}
+            >
               Checkout
             </button>
           </div>
         ) : (
-          <h1>Your Cart Is Empty</h1>
+          <h4>Your Cart Is Empty</h4>
         )}
 
         {this.state.displayCheckout &&
