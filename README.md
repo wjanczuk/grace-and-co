@@ -2,7 +2,7 @@
 
 _Grace Yourself with Beautifully Crafted & Elegant Designs by Grace & Co._
 
-**Grace & Co.** is a mock e-commerce website featuring earrings, created by a team of developers during the [Grace Hopper Program](https://www.gracehopper.com/) at Fullstack Academy.
+**Grace & Co.** is a mock e-commerce website featuring earrings, created in a 4-day sprint by a team of developers during the [Grace Hopper Program](https://www.gracehopper.com/) at Fullstack Academy, intended as an exercise in building integrated, semi-complex React components with a RESTful API to manage products, which we sourced online.
 
 Grace & Co. is deployed on [heroku](https://www.heroku.com/), at [Grace & Co](https://grace-and-co.herokuapp.com/).
 
